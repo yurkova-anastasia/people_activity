@@ -1,0 +1,75 @@
+buildscript {
+    ext {
+        springBootGradlePluginVer = "2.5.14"
+        springCloudVer = "2020.0.5"
+        lombokVer = "1.18.24"
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+}
+
+plugins {
+    id "org.liquibase.gradle" version "2.1.1" apply false
+    id "org.owasp.dependencycheck" version "6.5.3" apply false
+}
+
+allprojects {
+    group "com.java.ku"
+}
+
+subprojects { subModule ->
+
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://jitpack.io" }
+    }
+
+    apply plugin: "java-library"
+
+    dependencies {
+        compileOnly "org.projectlombok:lombok:$lombokVer"
+        annotationProcessor "org.projectlombok:lombok:$lombokVer"
+        testCompileOnly "org.projectlombok:lombok:$lombokVer"
+        testAnnotationProcessor "org.projectlombok:lombok:$lombokVer"
+    }
+
+    compileJava {
+        options.getGeneratedSourceOutputDirectory().set(file ("$buildDir/generated/main"))
+    }
+
+    apply plugin: "idea"
+    idea {
+        module {
+            inheritOutputDirs = false
+            outputDir file("$buildDir/classes/main")
+            testOutputDir file("$buildDir/classes/test")
+            generatedSourceDirs += file "$buildDir/generated/main"
+        }
+    }
+
+    task moveJars(type: Copy) {
+        from subprojects.collect { it.tasks.withType(Jar) }
+        into "$buildDir/libs"
+    }
+
+    pluginManager.withPlugin("org.springframework.boot") {
+        springBoot {
+            buildInfo()
+        }
+    }
+
+    apply plugin: "project-report"
+    apply plugin: "org.owasp.dependencycheck"
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+}

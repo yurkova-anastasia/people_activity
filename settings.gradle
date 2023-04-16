@@ -1,0 +1,8 @@
+rootProject.name = 'people_activity'
+
+include "ku-users"
+include "ku-gateway"
+include "ku-common"
+include "ku-ping-generator"
+include "ku-devices"
+
