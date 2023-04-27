@@ -5,7 +5,7 @@
 
     <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            CREATE TYPE gender_enum AS ENUM ('female', 'male')
+            CREATE TYPE gender_enum AS ENUM ('FEMALE', 'MALE')
         </sql>
         <rollback>
             <sql>

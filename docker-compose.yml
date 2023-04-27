@@ -31,6 +31,6 @@ services:
         --classpath="/databases/ku-users/"
         --changeLogFile="changelog.xml"
         --url="jdbc:postgresql://postgres:5432/ku_users"
-        --username=user_for_ku_users
+        --username=ku_users_app
         --password=password  
       update

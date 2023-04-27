@@ -15,7 +15,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="updated_date_at_utc" type="timestamp without time zone">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="user_id" type="bigserial">
                 <constraints nullable="false"/>
