@@ -28,9 +28,9 @@ services:
       liquibase
         --logLevel=INFO
         --driver=org.postgresql.Driver
-        --classpath="/databases/users/"
+        --classpath="/databases/ku-users/"
         --changeLogFile="changelog.xml"
         --url="jdbc:postgresql://postgres:5432/ku_users"
-        --username=root
+        --username=user_for_ku_users
         --password=password  
       update

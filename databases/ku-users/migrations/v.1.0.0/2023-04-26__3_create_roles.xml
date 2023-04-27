@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <createTable tableName="roles">
             <column name="id" type="bigserial" autoIncrement="true">
                 <constraints primaryKey="true"/>
@@ -11,12 +11,24 @@
             <column name="role_name" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="inserted_date_at_utc" type="timestamp">
+            <column name="inserted_date_at_utc" type="timestamp without time zone">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_date_at_utc" type="timestamp">
+            <column name="updated_date_at_utc" type="timestamp without time zone">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            ALTER TABLE roles
+            ADD CONSTRAINT role_name_unique UNIQUE(role_name)
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE roles DROP CONSTRAINT role_name_unique
+            </sql>
+        </rollback>
     </changeSet>
 </databaseChangeLog>
