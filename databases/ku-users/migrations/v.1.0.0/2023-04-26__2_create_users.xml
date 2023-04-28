@@ -29,20 +29,18 @@
             <column name="inserted_date_at_utc" type="timestamp without time zone">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_date_at_utc" type="timestamp without time zone">
-                <constraints nullable="true"/>
-            </column>
+            <column name="updated_date_at_utc" type="timestamp without time zone"/>
         </createTable>
     </changeSet>
 
     <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
         <sql>
             ALTER TABLE users
-            ADD CONSTRAINT username_unique UNIQUE(username)
+            ADD CONSTRAINT uc_users_username UNIQUE(username)
         </sql>
         <rollback>
             <sql>
-                ALTER TABLE users DROP CONSTRAINT username_unique
+                ALTER TABLE users DROP CONSTRAINT uc_users_username
             </sql>
         </rollback>
     </changeSet>

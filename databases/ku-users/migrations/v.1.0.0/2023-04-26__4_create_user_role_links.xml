@@ -14,9 +14,7 @@
             <column name="inserted_date_at_utc" type="timestamp without time zone">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_date_at_utc" type="timestamp without time zone">
-                <constraints nullable="true"/>
-            </column>
+            <column name="updated_date_at_utc" type="timestamp without time zone"/>
             <column name="user_id" type="bigserial">
                 <constraints nullable="false"/>
             </column>
@@ -54,7 +52,7 @@
         <sql>
             CREATE UNIQUE INDEX uidx_user_role_user_id
             ON user_role_links (user_id)
-            WHERE active = true
+            WHERE active = TRUE
         </sql>
         <rollback>
             <sql>
