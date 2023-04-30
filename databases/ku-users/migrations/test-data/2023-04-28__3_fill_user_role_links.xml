@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            WITH series AS (
+             SELECT generate_series(1, 100) AS sery
+            )
+
+            INSERT INTO user_role_links(active,inserted_date_at_utc, user_id, role_id)
+            SELECT
+                FALSE,
+                now(),
+                s.sery,
+                CASE
+                    WHEN s.sery % 2 = 0 THEN 2
+                    ELSE 1
+                END
+            FROM series s
+        </sql>
+    </changeSet>
+</databaseChangeLog>
+

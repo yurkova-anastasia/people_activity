@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            WITH series AS (
+                SELECT generate_series(1, 100) AS sery
+            )
+
+            INSERT INTO users ("name", surname, "age", gender, username, "password", inserted_date_at_utc)
+            SELECT
+                CASE
+                    WHEN s.sery % 5 = 0 then 'Vlad'
+                    WHEN s.sery % 4 = 0 then 'Nastya'
+                    WHEN s.sery % 3 = 0 then 'Katya'
+                    WHEN s.sery % 2 = 0 then 'Polina'
+                    WHEN s.sery = 1  then 'Yarick'
+                    ELSE 'Andrew'
+                END,
+                CASE
+                    WHEN s.sery % 5 = 0 then 'Kolyago'
+                    WHEN s.sery % 4 = 0 then 'Yurkova'
+                    WHEN s.sery % 3 = 0 then 'Kamenko'
+                    WHEN s.sery % 2 = 0 then 'Starostenko'
+                    WHEN s.sery = 1  then 'Vasilevski'
+                    ELSE 'Yuriev'
+                END,
+                CASE
+                    WHEN s.sery % 5 = 0 then 20
+                    WHEN s.sery % 4 = 0 then 18
+                    WHEN s.sery % 3 = 0 then 13
+                    WHEN s.sery % 2 = 0 then 17
+                    WHEN s.sery = 1  then 25
+                    ELSE 31
+                END,
+                CASE
+                    WHEN s.sery % 2 = 0 then 'FEMALE'::gender_enum
+                    ELSE 'MALE'::gender_enum
+                END,
+                'User' || s.sery,
+                lpad(s.sery::varchar, 6, '0'),
+                now()
+            FROM series s
+        </sql>
+    </changeSet>
+</databaseChangeLog>

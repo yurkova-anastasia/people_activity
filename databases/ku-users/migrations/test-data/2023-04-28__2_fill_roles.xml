@@ -3,6 +3,11 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="v.1.0.0/cumulative-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="test-data/cumulative-changelog.xml" relativeToChangelogFile="true"/>
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            INSERT INTO roles(role_name, inserted_date_at_utc) values
+            ('Admin',now()),
+            ('User',now())
+        </sql>
+    </changeSet>
 </databaseChangeLog>
