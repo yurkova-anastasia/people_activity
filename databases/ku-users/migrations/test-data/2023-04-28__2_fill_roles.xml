@@ -5,20 +5,9 @@
 
     <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            WITH series AS (
-             SELECT generate_series(1, 2) AS sery
-            )
-            INSERT INTO roles(role_name, inserted_date_at_utc)
-            SELECT
-                CASE
-                    WHEN s.sery = 2 THEN 'User'
-                    ELSE 'Admin'
-                END,
-                '2022-01-01 00:00:00.000'::TIMESTAMP + (FLOOR(RANDOM() * 30) + 1)::INTEGER * INTERVAL '7 day' +
-                (FLOOR(RANDOM() * 24))::INTEGER * INTERVAL '1 hour' +
-                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '1 minute' +
-                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '1 second'
-            FROM series s
+            INSERT INTO roles(role_name, inserted_date_at_utc) VALUES
+            ('Admin', '2022-05-03T12:02:45.000Z'),
+            ('User', '2022-11-23T18:11:32.000Z')
         </sql>
     </changeSet>
 </databaseChangeLog>
