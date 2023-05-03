@@ -5,11 +5,8 @@
 
     <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            WITH user_series AS (
-             SELECT generate_series(1, 100) AS user_id
-            ),
-            role_series AS (
-            SELECT generate_series(1, 4) AS role_index
+            WITH role_series AS (
+                SELECT generate_series(1, 4) AS role_count
             )
             INSERT INTO user_role_links(active,inserted_date_at_utc, user_id, role_id)
             SELECT
@@ -18,19 +15,19 @@
                 (FLOOR(RANDOM() * 24))::INTEGER * INTERVAL '1 hour' +
                 (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '10 minute' +
                 (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '18 second',
-                us.user_id,
+                u.id,
                 CASE
-                    WHEN rs.role_index % 2 = 0 THEN 2
+                    WHEN rs.role_count % 2 = 0 THEN 2
                     ELSE 1
                 END
-            FROM user_series us
+            FROM users u
             CROSS JOIN role_series rs;
         </sql>
     </changeSet>
 
     <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            UPDATE user_role_links ur
+            UPDATE user_role_links url
             SET updated_date_at_utc = prev.inserted_date_at_utc
             FROM (
                 SELECT id, user_id, role_id, inserted_date_at_utc,
@@ -38,15 +35,15 @@
                 FROM user_role_links
                 WHERE active = FALSE
             ) prev
-            WHERE ur.user_id = prev.user_id
+            WHERE url.user_id = prev.user_id
         </sql>
     </changeSet>
 
     <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            UPDATE user_role_links AS u
+            UPDATE user_role_links AS url
             SET active = TRUE, updated_date_at_utc = NULL
-            WHERE (u.user_id, u.inserted_date_at_utc) IN (
+            WHERE (url.user_id, url.inserted_date_at_utc) IN (
                 SELECT user_id, MAX(inserted_date_at_utc) AS latest_inserted_date
                 FROM user_role_links
                 WHERE active = FALSE
