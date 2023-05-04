@@ -6,24 +6,24 @@
     <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <sql>
             WITH series AS (
-                SELECT generate_series(1, 100) AS sery
+                SELECT GENERATE_SERIES(1, 100) AS sery
             )
             INSERT INTO users ("name", surname, "age", gender, username, "password", inserted_date_at_utc)
-                SELECT
-                    'name' || s.sery,
-                    'surname' || s.sery,
-                    random()*(65-14)+14,
-                    CASE
-                        WHEN random() &lt; 0.5 THEN 'MALE'::gender_enum
-                        ELSE 'FEMALE'::gender_enum
-                    END,
-                    'User' || s.sery,
-                    lpad(s.sery::varchar, 6, '0'),
-                    '2022-01-01 00:00:00.000'::TIMESTAMP + (FLOOR(RANDOM() * 30) + 1)::INTEGER * INTERVAL '7 day' +
-                    (FLOOR(RANDOM() * 24))::INTEGER * INTERVAL '1 hour' +
-                    (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '1 minute' +
-                    (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '1 second'
-                FROM series s
+            SELECT
+                'name' || s.sery,
+                'surname' || s.sery,
+                RANDOM() * (65 - 14) + 14,
+                CASE
+                    WHEN s.sery % 2 = 0 THEN 'MALE'::gender_enum
+                    ELSE 'FEMALE'::gender_enum
+                END,
+                'User' || s.sery,
+                'password' || s.sery,
+                '2022-01-01 00:00:00.000'::TIMESTAMP + (FLOOR(RANDOM() * 30) + 1)::INTEGER * INTERVAL '7 day' +
+                (FLOOR(RANDOM() * 24))::INTEGER * INTERVAL '1 hour' +
+                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '1 minute' +
+                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '1 second'
+            FROM series s
         </sql>
     </changeSet>
 </databaseChangeLog>
