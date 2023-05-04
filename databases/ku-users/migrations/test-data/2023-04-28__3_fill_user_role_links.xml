@@ -20,8 +20,7 @@
                     WHEN rs.role_count % 2 = 0 THEN 2
                     ELSE 1
                 END
-            FROM users u
-            CROSS JOIN role_series rs;
+            FROM users u, role_series rs
         </sql>
     </changeSet>
 
