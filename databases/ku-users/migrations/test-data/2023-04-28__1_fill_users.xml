@@ -14,7 +14,7 @@
                 'surname' || s.sery,
                 RANDOM() * (65 - 14) + 14,
                 CASE
-                    WHEN random() &lt; 0.5 THEN 'MALE'::gender_enum
+                    WHEN RANDOM() &lt; 0.5 THEN 'MALE'::gender_enum
                     ELSE 'FEMALE'::gender_enum
                 END,
                 'User' || s.sery,
