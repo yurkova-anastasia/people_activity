@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgis/postgis:10-2.5-alpine
+    volumes:
+      - type: bind
+        source: ./create_db.sh
+        target: /docker-entrypoint-initdb.d/create_db.sh
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "psql postgresql://postgres@:5432/ku_users -c 'select 1;'" ]
+      interval: 10s
+      timeout: 3s
+      retries: 15
+
+  liquibase-users:
+    image: liquibase/liquibase:4.17.2
+    container_name: liquibase-users
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./databases/:/databases/
+    command: >
+      liquibase
+        --logLevel=INFO
+        --driver=org.postgresql.Driver
+        --classpath="/databases/ku-users/"
+        --changeLogFile="changelog.xml"
+        --url="jdbc:postgresql://postgres:5432/ku_users"
+        --username=ku_users_app
+        --password=password  
+      update
