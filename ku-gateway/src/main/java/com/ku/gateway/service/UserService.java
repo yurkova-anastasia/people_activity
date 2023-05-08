@@ -9,8 +9,12 @@ public class UserService {
 
     private RestTemplate restTemplate;
 
-    public String find(){
-        return restTemplate.getForObject("http://localhost:8080/users",String.class);
+    public String findAll(Integer pageNumber, Integer pageSize){
+        StringBuilder resourceUrl = new StringBuilder("http://localhost:8080/users/?");
+        resourceUrl.append("&pageNumber=").append(pageNumber);
+        resourceUrl.append("&pageSize=").append(pageSize);
+
+        return restTemplate.getForObject(resourceUrl.toString(), String.class);
     }
 
     @Autowired
