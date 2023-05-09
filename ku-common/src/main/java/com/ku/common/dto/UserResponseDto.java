@@ -6,14 +6,10 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
 @Accessors(chain = true)
-public class UserDto {
-
-    @Schema(description = "User id", requiredMode = Schema.RequiredMode.REQUIRED, example = "67")
-    private Long id;
+public class UserResponseDto {
 
     @Schema(description = "Name", requiredMode = Schema.RequiredMode.REQUIRED, example = "Anastasia")
     private String name;
@@ -30,15 +26,7 @@ public class UserDto {
     @Schema(description = "Username", requiredMode = Schema.RequiredMode.REQUIRED, example = "nst.yrk")
     private String username;
 
-    @Schema(description = "Password", requiredMode = Schema.RequiredMode.REQUIRED, example = "1233445")
-    private String password;
-
-    @Schema(description = "Inserted date at utc", requiredMode = Schema.RequiredMode.REQUIRED, example = "2022-01-01 00:00:00.000")
+    @Schema(description = "Inserted date at utc", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "2022-01-01 00:00:00.000")
     private LocalDateTime insertedDateAtUtc;
-
-    @Schema(description = "Updated date at utc", requiredMode = Schema.RequiredMode.REQUIRED, example = "2022-01-01 00:00:00.000")
-    private LocalDateTime  updatedDateAtUtc;
-
-    @Schema(description = "Roles", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Set<RoleListDto> roles;
 }

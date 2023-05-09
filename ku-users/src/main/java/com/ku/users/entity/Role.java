@@ -1,4 +1,4 @@
-package com.ku.common.entity;
+package com.ku.users.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -24,7 +24,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "role_name")
-    private String role_name;
+    private String roleName;
     @Column(name = "inserted_date_at_utc")
     private LocalDateTime insertedDateAtUtc;
     @Column(name = "updated_date_at_utc")
@@ -36,5 +36,4 @@ public class Role {
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
     private Set<User> users;
-
 }

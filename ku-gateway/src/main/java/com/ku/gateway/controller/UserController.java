@@ -1,5 +1,6 @@
 package com.ku.gateway.controller;
 
+import com.ku.common.dto.UserRequestDto;
 import com.ku.gateway.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,12 +21,14 @@ public class UserController {
     @GetMapping(produces = "application/json")
     @Operation(summary = "Find all users")
     public String findAll(
-            @Parameter(description = "pageNumber", example = "1")
-            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
-            @Parameter(description = "pageSize", example = "10")
-            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+        @Parameter(description = "Page number", example = "1")
+        @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
+        @Parameter(description = "Page size", example = "10")
+        @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
     ) {
-        return userService.findAll(pageNumber, pageSize);
+        return userService.findAll(new UserRequestDto()
+                .setPageNumber(pageNumber)
+                .setPageSize(pageSize));
     }
 
     @Autowired

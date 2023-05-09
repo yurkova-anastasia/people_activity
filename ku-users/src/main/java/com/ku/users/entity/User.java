@@ -1,5 +1,6 @@
-package com.ku.common.entity;
+package com.ku.users.entity;
 
+import com.ku.common.entity.Gender;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

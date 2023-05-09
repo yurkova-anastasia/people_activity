@@ -1,12 +1,12 @@
 package com.ku.users.controller;
 
-import com.ku.common.dto.UserDto;
-import com.ku.common.dto.UserListDto;
+import com.ku.common.dto.UserRequestDto;
+import com.ku.common.dto.UserResponseDto;
 import com.ku.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,11 +23,15 @@ public class UserController {
 
     @GetMapping()
     @Operation(summary = "Find all users")
-    public List<UserListDto> findAll(
-            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+    public List<UserResponseDto> findAll(
+        @Parameter(description = "Page number", example = "1")
+        @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
+        @Parameter(description = "Page size", example = "10")
+        @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
     ) {
-        return userService.findAll(pageNumber, pageSize);
+        return userService.findAll(new UserRequestDto()
+                .setPageNumber(pageNumber)
+                .setPageSize(pageSize));
     }
 
     @Autowired

@@ -1,8 +1,8 @@
 package com.ku.users.service;
 
-import com.ku.common.dto.UserDto;
-import com.ku.common.dto.UserListDto;
-import com.ku.common.entity.User;
+import com.ku.common.dto.UserRequestDto;
+import com.ku.common.dto.UserResponseDto;
+import com.ku.users.entity.User;
 import com.ku.users.mapper.UserMapper;
 import com.ku.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,10 @@ public class UserService {
     private UserMapper userMapper;
 
 
-    public List<UserListDto> findAll(Integer pageNumber, Integer pageSize) {
-        System.out.println(pageNumber + " " + pageSize);
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+    public List<UserResponseDto> findAll(UserRequestDto userRequestDto) {
+        var pageRequest = PageRequest.of(userRequestDto.getPageNumber(), userRequestDto.getPageSize());
         Page<User> users = userRepository.findAll(pageRequest);
-        return userMapper.toUserListDto(users.stream().toList());
+        return userMapper.toListUserResponseDto(users.stream().toList());
     }
 
     @Autowired
@@ -33,7 +32,7 @@ public class UserService {
     }
 
     @Autowired
-    public void setUserListMapper(UserMapper userListMapper) {
-        this.userMapper = userListMapper;
+    public void setUserMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 }
