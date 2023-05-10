@@ -25,13 +25,13 @@ public class UserController {
     @Operation(summary = "Find all users")
     public List<UserResponseDto> findAll(
         @Parameter(description = "Page number", example = "1")
-        @RequestParam(value = "pageNumber", required = false, defaultValue = "1") Integer pageNumber,
+        @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
         @Parameter(description = "Page size", example = "10")
-        @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize
+        @RequestParam(value = "size", required = false, defaultValue = "20") Integer size
     ) {
         return userService.findAll(new UserRequestDto()
-                .setPageNumber(pageNumber)
-                .setPageSize(pageSize));
+                .setPage(page)
+                .setSize(size));
     }
 
     @Autowired

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    List<UserResponseDto> toListUserResponseDto(List<User> user);
+    List<UserResponseDto> toUserResponseDto(List<User> user);
 }

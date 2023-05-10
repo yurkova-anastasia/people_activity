@@ -31,9 +31,9 @@ public class Role {
     private LocalDateTime updatedDateAtUtc;
     @ManyToMany
     @JoinTable(
-            name = "user_role_links",
-            joinColumns = {@JoinColumn(name = "role_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+        name = "user_role_links",
+        joinColumns = {@JoinColumn(name = "role_id")},
+        inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
     private Set<User> users;
 }

@@ -15,8 +15,8 @@ public class UserService {
 
     public String findAll(UserRequestDto userRequestDto){
         var resourceUrl = new StringBuilder(usersUrl)
-                .append("?&pageNumber=").append(userRequestDto.getPageNumber())
-                .append("&pageSize=").append(userRequestDto.getPageSize());
+                .append("?&page=").append(userRequestDto.getPage())
+                .append("&size=").append(userRequestDto.getSize());
         return restTemplate.getForObject(resourceUrl.toString(), String.class);
     }
 
@@ -25,7 +25,7 @@ public class UserService {
         this.restTemplate = restTemplate;
     }
 
-    @Value("${gateway.users-url}")
+    @Value("${ku-gateway.users-url}")
     public void setUsersUrl(String usersUrl) {
         this.usersUrl = usersUrl;
     }

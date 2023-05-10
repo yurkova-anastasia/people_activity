@@ -1,5 +1,4 @@
 server:
   port: 8082
-
-gateway:
+ku-gateway:
   users-url: http://localhost:8080/users

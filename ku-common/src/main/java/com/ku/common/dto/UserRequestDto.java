@@ -9,8 +9,8 @@ import lombok.experimental.Accessors;
 public class UserRequestDto {
 
     @Schema(description = "Page number", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "0")
-    private Integer pageNumber;
+    private Integer page;
 
     @Schema(description = "Page size", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "10")
-    private Integer pageSize;
+    private Integer size;
 }

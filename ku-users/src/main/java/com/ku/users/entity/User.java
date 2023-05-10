@@ -27,23 +27,24 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @Column(name = "name")
+
     private String name;
-    @Column(name = "surname")
+
     private String surname;
-    @Column(name = "age")
+
     private Integer age;
-    @Column(name = "gender")
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @Column(name = "username")
+
     private String username;
-    @Column(name = "password")
+
     private String password;
+
     @Column(name = "inserted_date_at_utc")
     private LocalDateTime insertedDateAtUtc;
+
     @Column(name = "updated_date_at_utc")
     private LocalDateTime updatedDateAtUtc;
 

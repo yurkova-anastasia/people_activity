@@ -21,9 +21,9 @@ public class UserService {
 
 
     public List<UserResponseDto> findAll(UserRequestDto userRequestDto) {
-        var pageRequest = PageRequest.of(userRequestDto.getPageNumber(), userRequestDto.getPageSize());
-        Page<User> users = userRepository.findAll(pageRequest);
-        return userMapper.toListUserResponseDto(users.stream().toList());
+        var pageRequest = PageRequest.of(userRequestDto.getPage(), userRequestDto.getSize());
+        var users = userRepository.findAll(pageRequest);
+        return userMapper.toUserResponseDto(users.getContent());
     }
 
     @Autowired
