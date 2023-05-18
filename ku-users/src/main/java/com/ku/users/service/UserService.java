@@ -1,12 +1,12 @@
 package com.ku.users.service;
 
+import com.ku.common.dto.AuthenticationUserDto;
 import com.ku.common.dto.UserRequestDto;
 import com.ku.common.dto.UserResponseDto;
 import com.ku.users.entity.User;
 import com.ku.users.mapper.UserMapper;
 import com.ku.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +24,11 @@ public class UserService {
         var pageRequest = PageRequest.of(userRequestDto.getPage(), userRequestDto.getSize());
         var users = userRepository.findAll(pageRequest);
         return userMapper.toUserResponseDto(users.getContent());
+    }
+
+    public AuthenticationUserDto findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        return userMapper.toAuthenticationUserDto(user);
     }
 
     @Autowired

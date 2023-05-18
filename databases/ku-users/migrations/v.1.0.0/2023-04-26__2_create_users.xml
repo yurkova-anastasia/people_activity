@@ -20,10 +20,10 @@
             <column name="gender" type="gender_enum">
                 <constraints nullable="false"/>
             </column>
-            <column name="username" type="varchar(16)">
+            <column name="username" type="varchar(256)">
                 <constraints nullable="false"/>
             </column>
-            <column name="password" type="varchar(256)">
+            <column name="password" type="varchar(60)">
                 <constraints nullable="false"/>
             </column>
             <column name="inserted_date_at_utc" type="timestamp without time zone">

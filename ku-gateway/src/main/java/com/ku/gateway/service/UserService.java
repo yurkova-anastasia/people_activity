@@ -20,6 +20,13 @@ public class UserService {
         return restTemplate.getForObject(resourceUrl.toString(), String.class);
     }
 
+    public String findByUsername(String username){
+        var resourceUrl = new StringBuilder(usersUrl)
+                .append("/username")
+                .append("?&username=").append(username);
+        return restTemplate.getForObject(resourceUrl.toString(), String.class);
+    }
+
     @Autowired
     public void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
