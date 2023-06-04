@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="4" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+        INSERT INTO authorities(authority_name, inserted_date_at_utc) VALUES
+            ('USER_WRITE', '2023-05-03T12:02:45.000Z'),
+            ('USER_READ', '2022-07-03T12:02:45.000Z'),
+            ('ADMIN_WRITE', '2022-01-03T12:02:55.000Z'),
+            ('ADMIN_READ', '2022-08-03T12:02:43.000Z'),
+            ('USER_DELETE', '2022-01-03T12:02:55.000Z'),
+            ('ADMIN_DELETE', '2022-01-03T12:02:55.000Z')
+        </sql>
+    </changeSet>
+</databaseChangeLog>

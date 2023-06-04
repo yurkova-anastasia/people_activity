@@ -5,9 +5,7 @@
 
     <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            UPDATE users u
-            SET "password"='$2a$12$TwyA3BAycKOqoRohVWBgvOkTutmQzSMcMegm1mIU2zI/1NX0uJmqy'
-            WHERE u.username='User1'
+            ALTER TABLE users ALTER COLUMN username TYPE varchar(256)
         </sql>
     </changeSet>
 </databaseChangeLog>

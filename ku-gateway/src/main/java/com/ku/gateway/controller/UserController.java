@@ -19,7 +19,7 @@ public class UserController {
 
     private UserService userService;
 
-    @PreAuthorize("hasAnyRole('Admin', 'User')")
+    @PreAuthorize("hasAuthority({'USER_READ'})")
     @GetMapping(produces = "application/json")
     @Operation(summary = "Find all users")
     public String findAll(
