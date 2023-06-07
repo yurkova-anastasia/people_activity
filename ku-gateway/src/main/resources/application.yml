@@ -8,4 +8,4 @@ spring:
   security:
     jwt:
       issuer: anastacia
-      expiration: 3600000
+      expiration: 2d

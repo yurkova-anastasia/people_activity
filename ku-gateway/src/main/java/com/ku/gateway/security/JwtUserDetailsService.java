@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ku.common.dto.AuthenticationUserDto;
 import com.ku.gateway.security.jwt.JwtUser;
-import com.ku.gateway.security.jwt.JwtUserFactory;
 import com.ku.gateway.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,18 +29,18 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var stringUser = userService.findByUsername(username);
-
         try {
             var user = objectMapper.readValue(stringUser, AuthenticationUserDto.class);
-
             if (user == null) {
                 throw new UsernameNotFoundException("User with username: " + username + " not found");
             }
-
-            var jwtUser = JwtUserFactory.create(user);
+            JwtUser jwtUser = JwtUser.builder()
+                    .id(user.getId())
+                    .username(user.getUsername())
+                    .password(user.getPassword())
+                    .roles(user.getRoles()).build();
             log.info("IN loadUserByUsername - user with username: {} successfully loaded", username);
             return jwtUser;
-
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

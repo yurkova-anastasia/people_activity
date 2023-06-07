@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <createIndex indexName="uidx_user_role_links_user_id" tableName="user_role_links">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <createIndex indexName="uidx_user_role_links_role_id" tableName="user_role_links">
+            <column name="role_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
+        <createIndex indexName="uidx_role_authority_links_authority_id" tableName="role_authority_links">
+            <column name="authority_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="4" author="anastasia.yurkova2003@gmail.com">
+        <createIndex indexName="uidx_role_authority_links_role_id" tableName="role_authority_links">
+            <column name="role_id"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

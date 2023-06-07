@@ -1,9 +1,10 @@
 package com.ku.gateway.security.jwt;
 
-import com.ku.common.dto.AuthenticationAuthorityDto;
 import com.ku.common.dto.AuthenticationRoleDto;
-import lombok.AllArgsConstructor;
+import com.ku.common.dto.AuthorityDto;
 import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,22 +15,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Builder
-@AllArgsConstructor
+@Data
+@Accessors(chain = true)
 public class JwtUser implements UserDetails {
 
     private Long id;
-    private String name;
-    private String surname;
     private String username;
     private String password;
     private Set<AuthenticationRoleDto> roles;
-    private LocalDateTime insertedDateAtUtc;
-
-    private LocalDateTime updatedDateAtUtc;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<AuthenticationAuthorityDto> authorities = new HashSet<>();
+        Set<AuthorityDto> authorities = new HashSet<>();
         roles.forEach(role -> authorities.addAll(role.getAuthorities()));
 
         return authorities.stream()

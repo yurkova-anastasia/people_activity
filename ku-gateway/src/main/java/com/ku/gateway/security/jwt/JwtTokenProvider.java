@@ -10,24 +10,28 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
 
 import static java.lang.String.format;
 
 @Slf4j
 @Component
-@PropertySource(ignoreResourceNotFound = true, value = "classpath:application.yml")
 public class JwtTokenProvider {
 
     @Value("${spring.security.jwt.issuer}")
     private String issuer;
 
+
+    private long expiration;
+
     @Value("${spring.security.jwt.expiration}")
-    private int expiration;
+    public void setExpiration(String expiration, Duration duration) {
+        this.expiration = duration.toMillis();
+    }
 
     private final Key secret = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     public String generateAccessToken(JwtUser user) {
@@ -40,15 +44,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String getUserId(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.getSubject().split(",")[0];
-    }
-
     public String getUsername(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(secret)
@@ -56,15 +51,6 @@ public class JwtTokenProvider {
                 .getBody();
 
         return claims.getSubject().split(",")[1];
-    }
-
-    public Date getExpirationDate(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.getExpiration();
     }
 
     public boolean validate(String token) {

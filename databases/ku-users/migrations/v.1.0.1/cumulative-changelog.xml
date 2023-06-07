@@ -6,6 +6,5 @@
     <include file="2023-06-04__1_change_type_of_username.xml" relativeToChangelogFile="true"/>
     <include file="2023-06-04__2_create_authorities.xml" relativeToChangelogFile="true"/>
     <include file="2023-06-04__3_create_role_authority_links.xml" relativeToChangelogFile="true"/>
-    <include file="2023-06-04__4_fill_authorities.xml" relativeToChangelogFile="true"/>
-    <include file="2023-06-04__5_fill_role_authority_links.xml" relativeToChangelogFile="true"/>
+    <include file="2023-06-06__4_create_index_for_foreign_key.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -5,11 +5,10 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
 @Accessors(chain = true)
-public class AuthenticationAuthorityDto {
+public class AuthorityDto {
 
     @Schema(description = "Authority id", requiredMode = Schema.RequiredMode.REQUIRED, example = "67")
     private Long id;

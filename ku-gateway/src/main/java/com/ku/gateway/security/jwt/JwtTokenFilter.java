@@ -26,7 +26,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -53,12 +52,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         var authentication = new UsernamePasswordAuthenticationToken(
                 userDetails, null,
                 userDetails == null ?
-                        List.of() : userDetails.getAuthorities()
-        );
+                        List.of() : userDetails.getAuthorities());
 
-        authentication.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);

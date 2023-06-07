@@ -14,7 +14,7 @@
                 (FLOOR(RANDOM() * 24))::INTEGER * INTERVAL '1 HOUR' +
                 (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '10 MINUTE' +
                 (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '18 SECOND'
-            FROM (select generate_series(1, 10)) v
+            FROM (select generate_series(1, 100)) v
             ON CONFLICT DO NOTHING
         </sql>
     </changeSet>
@@ -37,11 +37,11 @@
         <sql>
             UPDATE role_authority_links AS ral
             SET active = TRUE, updated_date_at_utc = NULL
-            WHERE (ral.role_id, ral.inserted_date_at_utc) IN (
-                SELECT role_id, MAX(inserted_date_at_utc) AS latest_inserted_date
+            WHERE (ral.role_id, ral.authority_id, ral.inserted_date_at_utc) IN (
+                SELECT role_id, authority_id, MAX(inserted_date_at_utc) AS latest_inserted_date
                 FROM role_authority_links
                 WHERE active = FALSE
-                GROUP BY role_id
+                GROUP BY role_id, authority_id
             )
         </sql>
     </changeSet>

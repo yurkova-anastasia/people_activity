@@ -10,8 +10,6 @@ import java.util.Set;
 @Data
 @Accessors(chain = true)
 public class AuthenticationRoleDto {
-    @Schema(description = "Role id", requiredMode = Schema.RequiredMode.REQUIRED, example = "2")
-    private Long id;
 
     @Schema(description = "Role name", requiredMode = Schema.RequiredMode.REQUIRED, example = "Admin")
     private String roleName;
@@ -19,9 +17,6 @@ public class AuthenticationRoleDto {
     @Schema(description = "Inserted date at utc", requiredMode = Schema.RequiredMode.REQUIRED, example = "2022-01-01 00:00:00.000")
     private LocalDateTime insertedDateAtUtc;
 
-    @Schema(description = "Updated date at utc", requiredMode = Schema.RequiredMode.REQUIRED, example = "2022-01-01 00:00:00.000")
-    private LocalDateTime  updatedDateAtUtc;
-
     @Schema(description = "Authorities", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Set<AuthenticationAuthorityDto> authorities;
+    private Set<AuthorityDto> authorities;
 }

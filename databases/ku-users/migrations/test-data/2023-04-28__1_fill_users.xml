@@ -26,4 +26,11 @@
             FROM series s
         </sql>
     </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            UPDATE users u
+            SET "password"='$2a$12$TwyA3BAycKOqoRohVWBgvOkTutmQzSMcMegm1mIU2zI/1NX0uJmqy'
+        </sql>
+    </changeSet>
 </databaseChangeLog>

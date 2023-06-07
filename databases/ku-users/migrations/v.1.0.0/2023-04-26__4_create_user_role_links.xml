@@ -25,27 +25,19 @@
     </changeSet>
 
     <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
-        <sql>
-            ALTER TABLE user_role_links
-            ADD CONSTRAINT fk_user_role_user_id FOREIGN KEY(user_id) REFERENCES users(id)
-        </sql>
-        <rollback>
-            <sql>
-                ALTER TABLE user_role_links DROP CONSTRAINT fk_user_role_user_id
-            </sql>
-        </rollback>
+        <addForeignKeyConstraint baseTableName="user_role_links"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_role_user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
-        <sql>
-            ALTER TABLE user_role_links
-            ADD CONSTRAINT fk_user_role_role_id FOREIGN KEY(role_id) REFERENCES roles(id)
-        </sql>
-        <rollback>
-            <sql>
-                ALTER TABLE user_role_links DROP CONSTRAINT fk_user_role_role_id
-            </sql>
-        </rollback>
+        <addForeignKeyConstraint baseTableName="user_role_links"
+                                 baseColumnNames="role_id"
+                                 constraintName="fk_user_role_role_id"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="4" author="anastasia.yurkova2003@gmail.com">

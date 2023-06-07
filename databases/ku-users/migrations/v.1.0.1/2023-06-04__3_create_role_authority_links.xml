@@ -8,10 +8,10 @@
             <column name="id" type="bigserial" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="role_id" type="int">
+            <column name="role_id" type="bigserial">
                 <constraints nullable="false"/>
             </column>
-            <column name="authority_id" type="int">
+            <column name="authority_id" type="bigserial">
                 <constraints nullable="false"/>
             </column>
             <column name="active" type="boolean">
@@ -25,39 +25,18 @@
     </changeSet>
 
     <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
-        <sql>
-            ALTER TABLE role_authority_links
-            ADD CONSTRAINT fk_role_authority_role_id FOREIGN KEY(role_id) REFERENCES roles(id)
-        </sql>
-        <rollback>
-            <sql>
-                ALTER TABLE role_authority_links DROP CONSTRAINT fk_role_authority_role_id
-            </sql>
-        </rollback>
+        <addForeignKeyConstraint baseTableName="role_authority_links"
+                                 baseColumnNames="role_id"
+                                 constraintName="fk_role_authority_role_id"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
-        <sql>
-            ALTER TABLE role_authority_links
-            ADD CONSTRAINT fk_authority_role_authority_id FOREIGN KEY(authority_id) REFERENCES authorities(id)
-        </sql>
-        <rollback>
-            <sql>
-                ALTER TABLE role_authority_links DROP CONSTRAINT fk_authority_role_authority_id
-            </sql>
-        </rollback>
-    </changeSet>
-
-    <changeSet id="4" author="anastasia.yurkova2003@gmail.com">
-        <sql>
-            CREATE UNIQUE INDEX uidx_role_authority_role_id
-            ON role_authority_links (role_id)
-            WHERE active = TRUE
-        </sql>
-        <rollback>
-            <sql>
-                ALTER TABLE role_authority_links DROP INDEX uidx_role_authority_role_id
-            </sql>
-        </rollback>
+        <addForeignKeyConstraint baseTableName="role_authority_links"
+                                 baseColumnNames="authority_id"
+                                 constraintName="fk_authority_role_authority_id"
+                                 referencedTableName="authorities"
+                                 referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>
