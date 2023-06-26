@@ -17,4 +17,17 @@
             <column name="updated_date_at_utc" type="timestamp without time zone"/>
         </createTable>
     </changeSet>
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <insert tableName="authorities">
+            <column name="authority_name" value="WRITE"/>
+            <column name="inserted_date_at_utc" valueDate="NOW()"/>
+            <column name="authority_name" value="READ"/>
+            <column name="inserted_date_at_utc" valueDate="NOW()"/>
+            <column name="authority_name" value="DELETE"/>
+            <column name="inserted_date_at_utc" valueDate="NOW()"/>
+        </insert>
+        <rollback>
+            <delete tableName="authorities"/>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>
