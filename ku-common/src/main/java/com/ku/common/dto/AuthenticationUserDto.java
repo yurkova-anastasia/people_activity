@@ -20,5 +20,5 @@ public class AuthenticationUserDto {
     private String password;
 
     @Schema(description = "Roles", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Set<AuthenticationRoleDto> roles;
+    private Set<AuthenticationResponseDto> roles;
 }

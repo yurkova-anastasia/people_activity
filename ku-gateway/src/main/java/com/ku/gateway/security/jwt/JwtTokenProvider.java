@@ -45,7 +45,7 @@ public class JwtTokenProvider {
     }
 
     private final Key secret = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    public String generateAccessToken(JwtUser user) {
+    public String generateAccessToken(UserDetailsImpl user) {
         LocalDateTime ldt = LocalDateTime.now(clock).plusSeconds(expiration);
         return "Bearer " + Jwts.builder()
                 .setSubject(format("%s,%s", user.getId(), user.getUsername()))

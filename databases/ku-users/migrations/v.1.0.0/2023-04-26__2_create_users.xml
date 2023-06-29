@@ -11,7 +11,7 @@
             <column name="name" type="varchar(256)">
                 <constraints nullable="false"/>
             </column>
-            <column name="surname" type="varchar(16)">
+            <column name="surname" type="varchar(256)">
                 <constraints nullable="false"/>
             </column>
             <column name="age" type="integer">

@@ -7,5 +7,5 @@ ku-gateway:
 spring:
   security:
     jwt:
-      issuer: anastacia
+      issuer: anastasia.yurkova2003@gmail.com
       expiration: 2d

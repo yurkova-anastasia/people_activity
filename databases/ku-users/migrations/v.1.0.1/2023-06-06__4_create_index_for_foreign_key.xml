@@ -3,7 +3,6 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-
     <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <createIndex indexName="uidx_user_role_links_user_id" tableName="user_role_links">
             <column name="user_id"/>
