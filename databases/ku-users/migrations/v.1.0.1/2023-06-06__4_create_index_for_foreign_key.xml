@@ -26,4 +26,10 @@
             <column name="role_id"/>
         </createIndex>
     </changeSet>
+
+    <changeSet id="5" author="anastasia.yurkova2003@gmail.com">
+        <createIndex indexName="uidx_role_authority_links_active" tableName="role_authority_links">
+            <column name="active"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

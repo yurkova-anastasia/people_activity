@@ -2,7 +2,6 @@ package com.ku.gateway.security;
 
 import com.ku.gateway.security.jwt.UserDetailsImpl;
 import com.ku.gateway.service.UserService;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @SneakyThrows
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userService.findByUsername(username);
-        UserDetailsImpl jwtUser = UserDetailsImpl.builder()
+        var jwtUser = UserDetailsImpl.builder()
             .id(user.getId())
             .username(user.getUsername())
             .password(user.getPassword())
-            .roles(user.getRoles()).build();
+            .authorities(user.getAuthorities()).build();
         log.info("IN loadUserByUsername - user with username: {} successfully loaded", username);
         return jwtUser;
     }

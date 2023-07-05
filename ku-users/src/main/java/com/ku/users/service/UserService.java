@@ -3,17 +3,18 @@ package com.ku.users.service;
 import com.ku.common.dto.AuthenticationUserDto;
 import com.ku.common.dto.UserRequestDto;
 import com.ku.common.dto.UserResponseDto;
+import com.ku.users.entity.Authority;
 import com.ku.users.entity.User;
 import com.ku.users.exception.ServiceException;
 import com.ku.users.mapper.UserMapper;
 import com.ku.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -30,14 +31,24 @@ public class UserService {
     }
 
     public AuthenticationUserDto findByUsername(String username) throws ServiceException {
-        User user = userRepository.findByUsername(username);
-        var userDto = userMapper.toAuthenticationUserDto(user);
-                if (userDto == null) {
+        var user = userRepository.findByUsername(username);
+        var userDto = fillAuthenticationUserDto(user);
+        if (userDto == null) {
             throw new ServiceException(String.format("User with username = %s not found", username), HttpStatus.NOT_FOUND);
         } else {
             return userDto;
         }
+    }
 
+    private static AuthenticationUserDto fillAuthenticationUserDto(User user) {
+        return new AuthenticationUserDto()
+                          .setId(user.getId())
+                          .setUsername(user.getUsername())
+                          .setPassword(user.getPassword())
+                          .setAuthorities(user.getRoles().stream()
+                                              .flatMap(role -> role.getAuthorities().stream())
+                                              .map(Authority::getAuthorityName)
+                                              .collect(Collectors.toSet()));
     }
 
     @Autowired

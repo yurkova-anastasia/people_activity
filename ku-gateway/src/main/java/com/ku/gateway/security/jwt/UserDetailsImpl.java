@@ -1,15 +1,13 @@
 package com.ku.gateway.security.jwt;
 
-import com.ku.common.dto.AuthenticationResponseDto;
-import com.ku.common.dto.AuthorityDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,16 +19,11 @@ public class UserDetailsImpl implements UserDetails {
     private Long id;
     private String username;
     private String password;
-    private Set<AuthenticationResponseDto> roles;
+    private Set<String> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<AuthorityDto> authorities = new HashSet<>();
-        roles.forEach(role -> authorities.addAll(role.getAuthorities()));
-
-        return authorities.stream()
-                .map(authority -> (GrantedAuthority) authority::getAuthorityName)
-                .collect(Collectors.toList());
+        return authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
     }
 
     @Override

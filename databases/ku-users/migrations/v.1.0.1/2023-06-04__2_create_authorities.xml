@@ -21,18 +21,30 @@
     <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
         <insert tableName="authorities">
             <column name="authority_name" value="USER::WRITE"/>
-            <column name="inserted_date_at_utc" valueDate="NOW()"/>
+            <column name="inserted_date_at_utc" valueDate="NOW() AT TIME ZONE 'UTC'"/>
         </insert>
         <insert tableName="authorities">
             <column name="authority_name" value="USER::READ"/>
-            <column name="inserted_date_at_utc" valueDate="NOW()"/>
+            <column name="inserted_date_at_utc" valueDate="NOW() AT TIME ZONE 'UTC'"/>
         </insert>
         <insert tableName="authorities">
             <column name="authority_name" value="USER::DELETE"/>
-            <column name="inserted_date_at_utc" valueDate="NOW()"/>
+            <column name="inserted_date_at_utc" valueDate="NOW() AT TIME ZONE 'UTC'"/>
         </insert>
         <rollback>
             <delete tableName="authorities"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            ALTER TABLE authorities
+            ADD CONSTRAINT uc_authorities_authority_name UNIQUE(authority_name)
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE authorities DROP CONSTRAINT uc_authorities_authority_name
+            </sql>
         </rollback>
     </changeSet>
 </databaseChangeLog>
