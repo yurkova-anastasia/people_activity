@@ -35,20 +35,19 @@ public class UserService {
         var userDto = fillAuthenticationUserDto(user);
         if (userDto == null) {
             throw new ServiceException(String.format("User with username = %s not found", username), HttpStatus.NOT_FOUND);
-        } else {
-            return userDto;
         }
+        return userDto;
     }
 
-    private static AuthenticationUserDto fillAuthenticationUserDto(User user) {
+    private AuthenticationUserDto fillAuthenticationUserDto(User user) {
         return new AuthenticationUserDto()
-                          .setId(user.getId())
-                          .setUsername(user.getUsername())
-                          .setPassword(user.getPassword())
-                          .setAuthorities(user.getRoles().stream()
-                                              .flatMap(role -> role.getAuthorities().stream())
-                                              .map(Authority::getAuthorityName)
-                                              .collect(Collectors.toSet()));
+                   .setId(user.getId())
+                   .setUsername(user.getUsername())
+                   .setPassword(user.getPassword())
+                   .setAuthorities(user.getRoles().stream()
+                                       .flatMap(role -> role.getAuthorities().stream())
+                                       .map(Authority::getAuthorityName)
+                                       .collect(Collectors.toSet()));
     }
 
     @Autowired
