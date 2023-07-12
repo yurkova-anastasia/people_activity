@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            INSERT INTO role_authority_links(role_id, authority_id, active,inserted_date_at_utc)
+            SELECT
+                RANDOM() * ((SELECT count (*) FROM roles) - 1) + 1,
+                RANDOM() * ((SELECT count (*) FROM authorities) - 1) + 1,
+                FALSE,
+                '2022-01-01 00:00:00.000'::TIMESTAMP + (FLOOR(RANDOM() * 30) + 1)::INTEGER * INTERVAL '7 DAY' +
+                (FLOOR(RANDOM() * 24))::INTEGER * INTERVAL '1 HOUR' +
+                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '10 MINUTE' +
+                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '18 SECOND'
+            FROM (select generate_series(1, 100)) v
+            ON CONFLICT DO NOTHING
+        </sql>
+    </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            UPDATE role_authority_links ral
+            SET updated_date_at_utc = prev.inserted_date_at_utc
+            FROM (
+                SELECT id, role_id, authority_id, inserted_date_at_utc,
+                    LEAD(inserted_date_at_utc) OVER (PARTITION BY role_id ORDER BY inserted_date_at_utc DESC)
+                FROM role_authority_links
+                WHERE active = FALSE
+            ) prev
+            WHERE ral.role_id = prev.role_id
+        </sql>
+    </changeSet>
+
+    <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            UPDATE role_authority_links AS ral
+            SET active = TRUE, updated_date_at_utc = NULL
+            WHERE (ral.role_id, ral.authority_id, ral.inserted_date_at_utc) IN (
+                SELECT role_id, authority_id, MAX(inserted_date_at_utc) AS latest_inserted_date
+                FROM role_authority_links
+                WHERE active = FALSE
+                GROUP BY role_id, authority_id
+            )
+        </sql>
+    </changeSet>
+</databaseChangeLog>

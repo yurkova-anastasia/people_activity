@@ -1,4 +1,11 @@
 server:
   port: 8082
+
 ku-gateway:
   users-url: http://localhost:8080/users
+
+spring:
+  security:
+    jwt:
+      issuer: anastasia.yurkova2003@gmail.com
+      expiration: 2d
