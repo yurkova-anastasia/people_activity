@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <createTable tableName="roles">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="role_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="inserted_date_at_utc" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_date_at_utc" type="timestamp without time zone"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            ALTER TABLE roles
+            ADD CONSTRAINT uc_roles_role_name UNIQUE(role_name)
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE roles DROP CONSTRAINT uc_roles_role_name
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

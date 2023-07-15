@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            INSERT INTO roles(role_name, inserted_date_at_utc) VALUES
+            ('Admin', '2022-05-03T12:02:45.000Z'),
+            ('User', '2022-11-23T18:11:32.000Z')
+        </sql>
+    </changeSet>
+</databaseChangeLog>
