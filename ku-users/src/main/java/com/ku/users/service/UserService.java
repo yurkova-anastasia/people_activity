@@ -1,6 +1,6 @@
 package com.ku.users.service;
 
-import com.ku.common.dto.AuthenticationUserDto;
+import com.ku.common.dto.AuthenticationResponseDto;
 import com.ku.common.dto.UserRequestDto;
 import com.ku.common.dto.UserResponseDto;
 import com.ku.users.entity.Authority;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,24 +31,27 @@ public class UserService {
         return userMapper.toUserResponseDto(users.getContent());
     }
 
-    public AuthenticationUserDto findByUsername(String username) throws ServiceException {
+    public AuthenticationResponseDto findByUsername(String username) throws ServiceException {
+        if (username.isEmpty()) {
+            throw new ServiceException("Username is empty. Please, fill username.", HttpStatus.BAD_REQUEST);
+        }
         var user = userRepository.findByUsername(username);
-        var userDto = fillAuthenticationUserDto(user);
-        if (userDto == null) {
+        if (user == null) {
             throw new ServiceException(String.format("User with username = %s not found", username), HttpStatus.NOT_FOUND);
         }
-        return userDto;
+        return fillAuthenticationUserDto(user);
     }
 
-    private AuthenticationUserDto fillAuthenticationUserDto(User user) {
-        return new AuthenticationUserDto()
+    private AuthenticationResponseDto fillAuthenticationUserDto(User user) {
+        var authorities = user.getRoles().stream()
+                                  .flatMap(role -> role.getAuthorities().stream())
+                                  .map(Authority::getAuthorityName)
+                                  .collect(Collectors.toSet());
+        return new AuthenticationResponseDto()
                    .setId(user.getId())
                    .setUsername(user.getUsername())
                    .setPassword(user.getPassword())
-                   .setAuthorities(user.getRoles().stream()
-                                       .flatMap(role -> role.getAuthorities().stream())
-                                       .map(Authority::getAuthorityName)
-                                       .collect(Collectors.toSet()));
+                   .setAuthorities(authorities);
     }
 
     @Autowired

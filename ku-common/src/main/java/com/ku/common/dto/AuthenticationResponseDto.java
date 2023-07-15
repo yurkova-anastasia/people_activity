@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 @Accessors(chain = true)
-public class AuthenticationUserDto {
+public class AuthenticationResponseDto {
 
     @Schema(description = "User id", requiredMode = Schema.RequiredMode.REQUIRED, example = "67")
     private Long id;
@@ -19,6 +19,6 @@ public class AuthenticationUserDto {
     @Schema(description = "Password", requiredMode = Schema.RequiredMode.REQUIRED, example = "1233445")
     private String password;
 
-    @Schema(description = "Roles", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Set<String> authorities ;
+    @Schema(description = "Authorities", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Set<String> authorities;
 }

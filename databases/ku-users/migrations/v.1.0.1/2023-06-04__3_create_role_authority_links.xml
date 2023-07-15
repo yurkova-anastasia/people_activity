@@ -39,4 +39,17 @@
                                  referencedTableName="authorities"
                                  referencedColumnNames="id"/>
     </changeSet>
+
+    <changeSet id="4" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            CREATE UNIQUE INDEX uidx_role_authority_role_id_authority_id
+            ON role_authority_links (role_id, authority_id)
+            WHERE active = TRUE
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE role_authority_links DROP INDEX uidx_role_authority_role_id_authority_id
+            </sql>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>

@@ -1,6 +1,6 @@
 package com.ku.gateway.service;
 
-import com.ku.common.dto.AuthenticationUserDto;
+import com.ku.common.dto.AuthenticationResponseDto;
 import com.ku.common.dto.UserRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,11 +21,11 @@ public class UserService {
         return restTemplate.getForObject(resourceUrl.toString(), String.class);
     }
 
-    public AuthenticationUserDto findByUsername(String username) {
+    public AuthenticationResponseDto findByUsername(String username) {
         var resourceUrl = new StringBuilder(usersUrl)
                 .append("/username")
                 .append("?&username=").append(username);
-        return restTemplate.getForObject(resourceUrl.toString(), AuthenticationUserDto.class);
+        return restTemplate.getForObject(resourceUrl.toString(), AuthenticationResponseDto.class);
     }
 
     @Autowired

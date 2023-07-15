@@ -1,6 +1,5 @@
 package com.ku.users.mapper;
 
-import com.ku.common.dto.AuthenticationUserDto;
 import com.ku.common.dto.UserResponseDto;
 import com.ku.users.entity.User;
 import org.mapstruct.Mapper;
