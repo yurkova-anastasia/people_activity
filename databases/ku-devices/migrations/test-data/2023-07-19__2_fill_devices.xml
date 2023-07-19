@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            WITH devices_series AS (
+                SELECT GENERATE_SERIES(1, 10000) AS devices
+            )
+            INSERT INTO devices(model, status, username, inserted_date_at_utc, device_type_id)
+            SELECT
+                CASE
+                    WHEN RANDOM() &lt; 0.3 THEN 'SAMSUNG'
+                    WHEN RANDOM() >= 0.3 AND RANDOM() &lt; 0.45 THEN 'HUAWEI'
+                    WHEN RANDOM() >= 0.45 AND RANDOM() &lt; 0.85 THEN 'XIAOMI'
+                    ELSE 'APPLE'
+                END,
+                CASE
+                    WHEN d.devices % 2 = 0 THEN 'IN_USE'::device_status_enum
+                    ELSE 'BROKEN'::device_status_enum
+                END,
+                'User' || d.devices,
+                '2022-01-01 00:00:00.000'::TIMESTAMP + (FLOOR(RANDOM() * 30) + 1)::INTEGER * INTERVAL '7 DAY' +
+                (FLOOR(RANDOM() * 24))::INTEGER * INTERVAL '1 HOUR' +
+                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '10 MINUTE' +
+                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '18 SECOND',
+                FLOOR(RANDOM() * 6) + 1
+            FROM devices_series d
+        </sql>
+    </changeSet>
+</databaseChangeLog>
