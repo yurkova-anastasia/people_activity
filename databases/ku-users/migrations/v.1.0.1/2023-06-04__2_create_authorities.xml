@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <createTable tableName="authorities">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="authority_name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="inserted_date_at_utc" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_date_at_utc" type="timestamp without time zone"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <insert tableName="authorities">
+            <column name="authority_name" value="USER::WRITE"/>
+            <column name="inserted_date_at_utc" valueDate="NOW() AT TIME ZONE 'UTC'"/>
+        </insert>
+        <insert tableName="authorities">
+            <column name="authority_name" value="USER::READ"/>
+            <column name="inserted_date_at_utc" valueDate="NOW() AT TIME ZONE 'UTC'"/>
+        </insert>
+        <insert tableName="authorities">
+            <column name="authority_name" value="USER::DELETE"/>
+            <column name="inserted_date_at_utc" valueDate="NOW() AT TIME ZONE 'UTC'"/>
+        </insert>
+        <rollback>
+            <delete tableName="authorities"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="3" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            ALTER TABLE authorities
+            ADD CONSTRAINT uc_authorities_authority_name UNIQUE(authority_name)
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE authorities DROP CONSTRAINT uc_authorities_authority_name
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

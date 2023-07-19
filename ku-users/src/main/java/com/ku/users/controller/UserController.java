@@ -1,7 +1,9 @@
 package com.ku.users.controller;
 
+import com.ku.common.dto.AuthenticationResponseDto;
 import com.ku.common.dto.UserRequestDto;
 import com.ku.common.dto.UserResponseDto;
+import com.ku.users.exception.ServiceException;
 import com.ku.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,6 +34,15 @@ public class UserController {
         return userService.findAll(new UserRequestDto()
                 .setPage(page)
                 .setSize(size));
+    }
+
+    @GetMapping("/username")
+    @Operation(summary = "Find user by username")
+    public AuthenticationResponseDto findByUsername(
+        @Parameter(description = "Username", example = "User123")
+        @RequestParam(value = "username", required = false) String username
+    ) throws ServiceException {
+        return userService.findByUsername(username);
     }
 
     @Autowired

@@ -13,4 +13,7 @@ public class UserRequestDto {
 
     @Schema(description = "Page size", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "10")
     private Integer size;
+
+    @Schema(description = "Username", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "User10")
+    private String username;
 }
