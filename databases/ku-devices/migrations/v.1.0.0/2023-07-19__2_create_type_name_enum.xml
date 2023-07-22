@@ -5,7 +5,7 @@
 
     <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <sql>
-            CREATE TYPE type_name_enum AS ENUM ('PHONE', 'LAPTOP', 'FITNESS BAND')
+            CREATE TYPE type_name_enum AS ENUM ('PHONE', 'LAPTOP', 'FITNESS_BAND')
         </sql>
         <rollback>
             <sql>
