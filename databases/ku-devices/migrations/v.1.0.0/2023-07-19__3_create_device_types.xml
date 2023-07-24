@@ -20,4 +20,16 @@
             <column name="updated_date_at_utc" type="timestamp without time zone"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            ALTER TABLE device_types
+            ADD CONSTRAINT uc_device_types_type_name_support_notification UNIQUE(type_name, support_notification)
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE device_types DROP CONSTRAINT uc_device_types_type_name_support_notification
+            </sql>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>
