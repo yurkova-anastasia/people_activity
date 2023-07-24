@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            INSERT INTO device_types (type_name, support_notification, inserted_date_at_utc) VALUES
+            ('PHONE', TRUE, '2022-11-03T12:11:07.000Z'),
+            ('FITNESS_BAND', TRUE, '2023-05-03T12:23:11.000Z'),
+            ('LAPTOP', TRUE, '2020-08-01T12:02:32.000Z'),
+            ('PHONE', FALSE, '2019-12-04T12:45:45.000Z'),
+            ('FITNESS_BAND', FALSE, '2014-04-12T12:23:23.000Z'),
+            ('LAPTOP', FALSE, '2022-05-11T12:18:34.000Z')
+        </sql>
+    </changeSet>
+</databaseChangeLog>

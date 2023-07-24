@@ -34,3 +34,22 @@ services:
         --username=ku_users_app
         --password=password  
       update
+
+  liquibase-devices:
+    image: liquibase/liquibase:4.17.2
+    container_name: liquibase-devices
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./databases/:/databases/
+    command: >
+      liquibase
+        --logLevel=INFO
+        --driver=org.postgresql.Driver
+        --classpath="/databases/ku-devices/"
+        --changeLogFile="changelog.xml"
+        --url="jdbc:postgresql://postgres:5432/ku_devices"
+        --username=ku_devices_app
+        --password=password  
+      update

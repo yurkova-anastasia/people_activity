@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <createTable tableName="device_pings">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="weight" type="real">
+                <constraints nullable="false"/>
+            </column>
+            <column name="height" type="real">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pulse" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="temperature" type="real">
+                <constraints nullable="false"/>
+            </column>
+            <column name="heartbeat" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="respiratory_rate" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="systolic_pressure" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="diastolic_pressure" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="inserted_date_at_utc" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_date_at_utc" type="timestamp without time zone"/>
+            <column name="device_id" type="bigserial">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <addForeignKeyConstraint baseTableName="device_pings" baseColumnNames="device_id"
+                                 constraintName="fk_device_pings_devices_device_id"
+                                 referencedTableName="devices"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
+
