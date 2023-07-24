@@ -44,7 +44,7 @@
 
     <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
         <addForeignKeyConstraint baseTableName="device_pings" baseColumnNames="device_id"
-                                 constraintName="devices_fk"
+                                 constraintName="fk_device_pings_devices_device_id"
                                  referencedTableName="devices"
                                  referencedColumnNames="id"/>
     </changeSet>
