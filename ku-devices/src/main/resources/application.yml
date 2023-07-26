@@ -1,23 +1,20 @@
 server:
   port: 8081
 
-topic:
-  name: ping
-
 spring:
   kafka:
     consumer:
       group-id: "default"
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   datasource:
     url: jdbc:postgresql://localhost:5432/ku_devices
     driver-class-name: org.postgresql.Driver
     username: ku_devices_app
     password: password
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show_sql: true
-    format_sql: true
+
+topic:
+  name: ping
+
+auto:
+  create:
+    topics:
+      enable: true
