@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Accessors(chain = true)
-public class DevicePingsDto {
+public class DevicePingDto {
 
     private Float weight;
 

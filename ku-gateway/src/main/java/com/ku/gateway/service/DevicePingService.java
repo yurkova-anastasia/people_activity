@@ -1,21 +1,21 @@
 package com.ku.gateway.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ku.common.dto.DevicePingsDto;
-import com.ku.gateway.service.producer.Producer;
+import com.ku.common.dto.DevicePingDto;
+import com.ku.gateway.service.producer.DevicePingProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class DevicePingsService {
+public class DevicePingService {
 
     private RestTemplate restTemplate;
 
-    private Producer producer;
+    private DevicePingProducer producer;
 
-    public String addPing(DevicePingsDto ping) throws JsonProcessingException {
-        return producer.sendMessage(ping);
+    public void save(DevicePingDto ping) throws JsonProcessingException {
+        producer.sendMessage(ping);
     }
 
     @Autowired
@@ -24,7 +24,7 @@ public class DevicePingsService {
     }
 
     @Autowired
-    public void setProducer(Producer producer) {
+    public void setProducer(DevicePingProducer producer) {
         this.producer = producer;
     }
 }

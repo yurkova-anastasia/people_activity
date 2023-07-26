@@ -1,8 +1,8 @@
 package com.ku.gateway.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ku.common.dto.DevicePingsDto;
-import com.ku.gateway.service.DevicePingsService;
+import com.ku.common.dto.DevicePingDto;
+import com.ku.gateway.service.DevicePingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/device_pings")
-public class DevicePingsController {
+@RequestMapping("/devicePing")
+public class DevicePingController {
 
-    private DevicePingsService devicePingsService;
+    private DevicePingService devicePingsService;
 
     @PostMapping
-    public String aggPing(@RequestBody DevicePingsDto ping) throws JsonProcessingException {
-        return devicePingsService.addPing(ping);
+    public void save(@RequestBody DevicePingDto ping) throws JsonProcessingException {
+        devicePingsService.save(ping);
     }
 
     @Autowired
-    public void setDevicePingsService(DevicePingsService devicePingsService) {
+    public void setDevicePingsService(DevicePingService devicePingsService) {
         this.devicePingsService = devicePingsService;
     }
 }

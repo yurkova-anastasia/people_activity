@@ -1,7 +1,7 @@
 package com.ku.devices.service;
 
-import com.ku.devices.entity.DevicePings;
-import com.ku.devices.repository.DevicePingsRepository;
+import com.ku.common.dto.DevicePingDto;
+import com.ku.devices.repository.DevicePingRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class DevicePingsService {
 
-    private DevicePingsRepository devicePingsRepository;
+    private DevicePingRepository devicePingsRepository;
 
     @Autowired
-    public void setDevicePingsRepository(DevicePingsRepository devicePingsRepository) {
+    public void setDevicePingsRepository(DevicePingRepository devicePingsRepository) {
         this.devicePingsRepository = devicePingsRepository;
     }
 
 
-    public void persistDevicePings(DevicePings devicePings) {
-        DevicePings pings = devicePingsRepository.save(devicePings);
-        log.info("Device ping persisted {}", pings);
+    public void persistDevicePings(DevicePingDto devicePingsDto) {
+        devicePingsRepository.save(devicePingsDto);
+        log.info("Device ping persisted {}", devicePingsDto);
     }
 }

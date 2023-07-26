@@ -36,13 +36,4 @@ public class KafkaProducerConfig {
     public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
-
-    @Bean
-    public NewTopic topic() {
-        return TopicBuilder
-                   .name("ping")
-                   .partitions(1)
-                   .replicas(1)
-                   .build();
-    }
 }
