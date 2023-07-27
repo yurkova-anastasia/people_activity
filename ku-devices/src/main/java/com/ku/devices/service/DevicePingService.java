@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class DevicePingsService {
+public class DevicePingService {
 
     private DevicePingRepository devicePingsRepository;
 
@@ -18,7 +18,7 @@ public class DevicePingsService {
     }
 
 
-    public void persistDevicePings(DevicePingDto devicePingsDto) {
+    public void saveDevicePing(DevicePingDto devicePingsDto) {
         devicePingsRepository.save(devicePingsDto);
         log.info("Device ping persisted {}", devicePingsDto);
     }
