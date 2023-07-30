@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com" context = "data_migration">
+        <sql>
+            INSERT INTO device_pings(weight, height, pulse, temperature, heartbeat, respiratory_rate, systolic_pressure,
+            diastolic_pressure, inserted_date_at_utc, device_id)
+            SELECT
+                (RANDOM() * (100 - 50) + 50)::REAL AS weight,
+                (RANDOM() * (200 - 150) + 150)::REAL AS height,
+                (RANDOM() * (100 - 60) + 60)::INTEGER AS pulse,
+                (RANDOM() * (40 - 35) + 35)::REAL AS temperature,
+                (RANDOM() * (100 - 60) + 60)::INTEGER AS heartbeat,
+                (RANDOM() * (25 - 15) + 15)::INTEGER AS respiratory_rate,
+                (RANDOM() * (140 - 100) + 100)::INTEGER AS systolic_pressure,
+                (RANDOM() * (90 - 60) + 60)::INTEGER AS diastolic_pressure,
+                '2022-01-01 00:00:00.000'::TIMESTAMP + (FLOOR(RANDOM() * 30) + 1)::INTEGER * INTERVAL '7 DAY' +
+                (FLOOR(RANDOM() * 24))::INTEGER * INTERVAL '1 HOUR' +
+                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '10 MINUTE' +
+                (FLOOR(RANDOM() * 60))::INTEGER * INTERVAL '18 SECOND',
+                d.id
+            FROM devices d
+            CROSS JOIN generate_series(1, 5)
+        </sql>
+    </changeSet>
+</databaseChangeLog>
