@@ -9,3 +9,14 @@ spring:
     jwt:
       issuer: anastasia.yurkova2003@gmail.com
       expiration: 2d
+  kafka:
+    bootstrap-servers:
+      localhost: 9092
+
+topic:
+  name: ping
+
+auto:
+  create:
+    topics:
+      enable: true
