@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+        ALTER TABLE device_pings ADD active BOOLEAN
+        </sql>
+    </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com">
+        <sql>
+            CREATE UNIQUE INDEX uidx_device_pings_device_id
+            ON device_pings (device_id)
+            WHERE active = TRUE
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE device_pings DROP INDEX uidx_device_pings_device_id
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
+

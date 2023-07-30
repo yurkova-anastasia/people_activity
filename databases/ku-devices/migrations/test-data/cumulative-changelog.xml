@@ -4,4 +4,6 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
     <include file="2023-07-19__1_fill_device_types.xml" relativeToChangelogFile="true"/>
     <include file="2023-07-19__2_fill_devices.xml" relativeToChangelogFile="true"/>
+    <include file="2023-07-30__3_fill_device_pings.xml" relativeToChangelogFile="true"/>
+    <include file="2023-07-30__4_fill_field_active_in_device_pings.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
