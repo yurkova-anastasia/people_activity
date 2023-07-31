@@ -26,4 +26,8 @@ public class DevicePingDto {
     private Integer diastolicPressure;
 
     private LocalDateTime insertedDateAtUtc;
+
+    private Long deviceId;
+
+    private Boolean active;
 }

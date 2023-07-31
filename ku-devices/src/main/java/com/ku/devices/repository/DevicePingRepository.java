@@ -7,14 +7,24 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
+
 @Repository
 public class DevicePingRepository {
 
     public static final String SAVE = """
           INSERT INTO device_pings (weight, height, pulse, temperature, heartbeat,
-                respiratory_rate, systolic_pressure, diastolic_pressure, inserted_date_at_utc)
+                respiratory_rate, systolic_pressure, diastolic_pressure, inserted_date_at_utc, device_id, active)
           VALUES (:weight, :height, :pulse, :temperature, :heartbeat,
-           :respiratoryRate, :systolicPressure, :diastolicPressure, :insertedDateAtUtc)
+                :respiratoryRate, :systolicPressure, :diastolicPressure, :insertedDateAtUtc, :deviceId, :active)
+        """;
+
+    public static final String SELECT_FOR_UPDATE = """
+           SELECT * FROM device_pings WHERE device_id = :deviceId FOR UPDATE
+        """;
+
+    public static final String UPDATE_ACTIVE = """
+           UPDATE device_pings SET active = FALSE WHERE device_id = :deviceId
         """;
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -24,20 +34,27 @@ public class DevicePingRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public void save(DevicePingDto devicePingsDto) {
-        namedParameterJdbcTemplate.update(SAVE, fillParameters(devicePingsDto));;
+    @Transactional
+    public void save(DevicePingDto devicePingDto) {
+        var parameters = new MapSqlParameterSource()
+                                  .addValue("deviceId", devicePingDto.getDeviceId());
+        namedParameterJdbcTemplate.query(SELECT_FOR_UPDATE, parameters, resultSet -> {});
+        namedParameterJdbcTemplate.update(UPDATE_ACTIVE, parameters);
+        namedParameterJdbcTemplate.update(SAVE, fillParameters(devicePingDto));
     }
 
-    private MapSqlParameterSource fillParameters(DevicePingDto devicePingsDto) {
+    private MapSqlParameterSource fillParameters(DevicePingDto devicePingDto) {
         return new MapSqlParameterSource()
-                   .addValue("weight", devicePingsDto.getWeight())
-                   .addValue("height", devicePingsDto.getHeight())
-                   .addValue("pulse", devicePingsDto.getPulse())
-                   .addValue("temperature", devicePingsDto.getTemperature())
-                   .addValue("heartbeat", devicePingsDto.getHeartbeat())
-                   .addValue("respiratoryRate", devicePingsDto.getRespiratoryRate())
-                   .addValue("systolicPressure", devicePingsDto.getSystolicPressure())
-                   .addValue("diastolicPressure", devicePingsDto.getDiastolicPressure())
-                   .addValue("insertedDateAtUtc", devicePingsDto.getInsertedDateAtUtc());
+                   .addValue("weight", devicePingDto.getWeight())
+                   .addValue("height", devicePingDto.getHeight())
+                   .addValue("pulse", devicePingDto.getPulse())
+                   .addValue("temperature", devicePingDto.getTemperature())
+                   .addValue("heartbeat", devicePingDto.getHeartbeat())
+                   .addValue("respiratoryRate", devicePingDto.getRespiratoryRate())
+                   .addValue("systolicPressure", devicePingDto.getSystolicPressure())
+                   .addValue("diastolicPressure", devicePingDto.getDiastolicPressure())
+                   .addValue("insertedDateAtUtc", devicePingDto.getInsertedDateAtUtc())
+                   .addValue("deviceId", devicePingDto.getDeviceId())
+                   .addValue("active", devicePingDto.getActive());
     }
 }

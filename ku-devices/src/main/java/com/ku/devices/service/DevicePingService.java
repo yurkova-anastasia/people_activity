@@ -17,7 +17,6 @@ public class DevicePingService {
         this.devicePingsRepository = devicePingsRepository;
     }
 
-
     public void saveDevicePing(DevicePingDto devicePingsDto) {
         devicePingsRepository.save(devicePingsDto);
         log.info("Device ping persisted {}", devicePingsDto);
