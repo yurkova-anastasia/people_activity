@@ -12,7 +12,10 @@ spring:
     password: password
 
 topic:
-  name: ping
+  pings:
+    name: ping
+  coordinates:
+    name: coordinates
 
 auto:
   create:
