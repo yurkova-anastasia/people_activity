@@ -28,6 +28,4 @@ public class DevicePingDto {
     private LocalDateTime insertedDateAtUtc;
 
     private Long deviceId;
-
-    private Boolean active;
 }

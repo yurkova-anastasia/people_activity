@@ -55,6 +55,6 @@ public class DevicePingRepository {
                    .addValue("diastolicPressure", devicePingDto.getDiastolicPressure())
                    .addValue("insertedDateAtUtc", devicePingDto.getInsertedDateAtUtc())
                    .addValue("deviceId", devicePingDto.getDeviceId())
-                   .addValue("active", devicePingDto.getActive());
+                   .addValue("active", true);
     }
 }
