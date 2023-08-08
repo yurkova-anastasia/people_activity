@@ -3,7 +3,7 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
 
-    <changeSet id="1" author="anastasia.yurkova2003@gmail.com" context = "data_migration">
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com">
         <sql>
             INSERT INTO device_types (type_name, support_notification, inserted_date_at_utc) VALUES
             ('PHONE', TRUE, '2022-11-03T12:11:07.000Z'),
