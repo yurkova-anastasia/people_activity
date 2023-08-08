@@ -8,6 +8,13 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Repository
 public class DevicePingRepository {
@@ -17,15 +24,15 @@ public class DevicePingRepository {
                 respiratory_rate, systolic_pressure, diastolic_pressure, inserted_date_at_utc, device_id, active)
           VALUES (:weight, :height, :pulse, :temperature, :heartbeat,
                 :respiratoryRate, :systolicPressure, :diastolicPressure, :insertedDateAtUtc, :deviceId, :active)
-        """;
+    """;
 
     public static final String SELECT_FOR_UPDATE = """
-           SELECT * FROM device_pings WHERE device_id = :deviceId FOR UPDATE
-        """;
+         SELECT * FROM device_pings WHERE device_id = :deviceId FOR UPDATE
+    """;
 
     public static final String UPDATE_ACTIVE = """
-           UPDATE device_pings SET active = FALSE WHERE device_id = :deviceId
-        """;
+         UPDATE device_pings SET active = FALSE WHERE device_id = :deviceId
+    """;
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -35,12 +42,27 @@ public class DevicePingRepository {
     }
 
     @Transactional
-    public void save(DevicePingDto devicePingDto) {
-        var parameters = new MapSqlParameterSource()
-                                  .addValue("deviceId", devicePingDto.getDeviceId());
-        namedParameterJdbcTemplate.query(SELECT_FOR_UPDATE, parameters, resultSet -> {});
-        namedParameterJdbcTemplate.update(UPDATE_ACTIVE, parameters);
-        namedParameterJdbcTemplate.update(SAVE, fillParameters(devicePingDto));
+    public void save(List<DevicePingDto> devicePingDto) {
+        devicePingDto.forEach(
+            pingDto -> {
+                var parameters = new MapSqlParameterSource()
+                                     .addValue("deviceId", pingDto.getDeviceId());
+                namedParameterJdbcTemplate.query(SELECT_FOR_UPDATE, parameters, resultSet -> {});
+                namedParameterJdbcTemplate.update(UPDATE_ACTIVE, parameters);
+                            }
+        );
+
+        Map<Long, DevicePingDto> latestPingByDevice = devicePingDto.stream()
+                                 .collect(Collectors.toMap(DevicePingDto::getDeviceId, Function.identity(),
+                                     BinaryOperator.maxBy(Comparator.comparing(DevicePingDto::getInsertedDateAtUtc))));
+
+        List<DevicePingDto> latestPings = new ArrayList<>(latestPingByDevice.values());
+
+        latestPings.forEach(
+            ping -> {
+                namedParameterJdbcTemplate.update(SAVE, fillParameters(ping));
+            }
+        );
     }
 
     private MapSqlParameterSource fillParameters(DevicePingDto devicePingDto) {

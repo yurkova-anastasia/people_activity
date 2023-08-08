@@ -8,13 +8,10 @@ import com.ku.devices.exception.ConsumerException;
 import com.ku.devices.service.DevicePingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -34,14 +31,16 @@ public class DevicePingConsumer {
 
     @KafkaListener(topics = topic)
     public void consumeMessage(List<String> messages) {
+        List<DevicePingDto> pingDto = new ArrayList<>();
         messages.forEach(
             message -> {
                 try {
                     var devicePingDto = objectMapper.readValue(message, DevicePingDto.class);
-                    devicePingService.saveDevicePing(devicePingDto);
+                    pingDto.add(devicePingDto);
                 } catch (JsonProcessingException e) {
                     throw new ConsumerException("There was a problem when processing JSON content", e);
                 }
             });
+        devicePingService.saveDevicePing(pingDto);
     }
 }
