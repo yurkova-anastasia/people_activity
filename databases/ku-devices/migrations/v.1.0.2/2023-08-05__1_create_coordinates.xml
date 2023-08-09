@@ -29,5 +29,18 @@
                                  referencedTableName="devices"
                                  referencedColumnNames="id"/>
     </changeSet>
+
+    <changeSet id="3" author="andrei.yurueu1@gmail.com">
+        <sql>
+            CREATE UNIQUE INDEX index_unique_active_device_id
+                ON device_coordinates (device_id)
+                WHERE active = true;
+        </sql>
+        <rollback>
+            <sql>
+                DROP INDEX index_unique_active_device_id;
+            </sql>
+        </rollback>
+    </changeSet>
 </databaseChangeLog>
 
