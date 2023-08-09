@@ -5,6 +5,9 @@ spring:
   kafka:
     consumer:
       group-id: "default"
+      properties:
+        max.poll.records: 100
+        max.poll.interval.ms: 300000
   datasource:
     url: jdbc:postgresql://localhost:5432/ku_devices
     driver-class-name: org.postgresql.Driver
