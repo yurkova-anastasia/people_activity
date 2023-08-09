@@ -12,14 +12,13 @@ public class DevicePingService {
 
     private DevicePingRepository devicePingsRepository;
 
-    @Autowired
-    public void setDevicePingsRepository(DevicePingRepository devicePingsRepository) {
-        this.devicePingsRepository = devicePingsRepository;
-    }
-
-
     public void saveDevicePing(DevicePingDto devicePingsDto) {
         devicePingsRepository.save(devicePingsDto);
         log.info("Device ping persisted {}", devicePingsDto);
+    }
+
+    @Autowired
+    public void setDevicePingsRepository(DevicePingRepository devicePingsRepository) {
+        this.devicePingsRepository = devicePingsRepository;
     }
 }
