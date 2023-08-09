@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class DevicePingConsumer {
 
-    private static final String TOPIC = "${topic.pings.name}";
-
     private final ObjectMapper objectMapper;
     private final DevicePingService devicePingService;
 
@@ -25,7 +23,7 @@ public class DevicePingConsumer {
         this.devicePingService = devicePingService;
     }
 
-    @KafkaListener(topics = TOPIC)
+    @KafkaListener(topics = "${topic.pings.name}")
     public void consumeMessage(String message) throws JsonProcessingException {
         var devicePingDto = objectMapper.readValue(message, DevicePingDto.class);
         devicePingService.saveDevicePing(devicePingDto);
