@@ -1,6 +1,5 @@
 package com.ku.devices.service.consumer;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ku.common.dto.DeviceCoordinatesDto;
@@ -41,5 +40,4 @@ public class DeviceCoordinatesConsumer {
                 });
         coordinatesService.saveDeviceCoordinates(coordinatesDtos);
     }
-
 }

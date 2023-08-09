@@ -1,6 +1,5 @@
 package com.ku.devices.service.consumer;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ku.common.dto.DevicePingDto;
@@ -28,5 +27,4 @@ public class DevicePingConsumer {
         var devicePingDto = objectMapper.readValue(message, DevicePingDto.class);
         devicePingService.saveDevicePing(devicePingDto);
     }
-
 }
