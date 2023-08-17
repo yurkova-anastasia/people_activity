@@ -1,10 +1,9 @@
 package com.ku.devices.service.consumer;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ku.common.dto.DevicePingDto;
-import com.ku.devices.exception.ConsumerException;
+import com.ku.devices.exception.DtoMappingException;
 import com.ku.devices.service.DevicePingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import java.util.List;
 @Component
 public class DevicePingConsumer {
 
-    private static final String topic = "${topic.name}";
-
     private final ObjectMapper objectMapper;
     private final DevicePingService devicePingService;
 
@@ -29,7 +26,7 @@ public class DevicePingConsumer {
         this.devicePingService = devicePingService;
     }
 
-    @KafkaListener(topics = topic)
+    @KafkaListener(topics = "${topic.pings.name}", groupId = "device")
     public void consumeMessage(List<String> messages) {
         List<DevicePingDto> pingDto = new ArrayList<>();
         messages.forEach(
@@ -38,7 +35,8 @@ public class DevicePingConsumer {
                     var devicePingDto = objectMapper.readValue(message, DevicePingDto.class);
                     pingDto.add(devicePingDto);
                 } catch (JsonProcessingException e) {
-                    throw new ConsumerException("There was a problem when processing JSON content", e);
+                    log.info("There was a problem when processing JSON content", e);
+                    throw new DtoMappingException("There was a problem when processing JSON content", e);
                 }
             });
         devicePingService.saveDevicePing(pingDto);
