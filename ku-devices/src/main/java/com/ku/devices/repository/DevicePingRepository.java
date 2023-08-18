@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class DevicePingRepository {
     """;
 
     public static final String UPDATE_ACTIVE = """
-         UPDATE device_pings SET active = FALSE WHERE device_id = :deviceId
+         UPDATE device_pings SET active = FALSE WHERE device_id IN (:deviceIds)
     """;
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -42,25 +43,46 @@ public class DevicePingRepository {
 
     @Transactional
     public void save(List<DevicePingDto> devicePingDto) {
-        var latestPingByDevice = groupingByDeviceId(devicePingDto);
+        var groupedByDeviceId = groupingByDeviceId(devicePingDto);
 
-        var latestPings = new ArrayList<>(latestPingByDevice.values());
+        List<MapSqlParameterSource> batchParams = new ArrayList<>();
 
-        latestPings.forEach(pingDto -> saveDevicePingDto(pingDto));
+        selectForUpdate(groupedByDeviceId, batchParams);
+
+        updateActiveField(groupedByDeviceId);
+
+        saveBatchOfDevicePingDto(batchParams);
     }
 
-    private Map<Long, DevicePingDto> groupingByDeviceId(List<DevicePingDto> devicePingDto) {
+    private void saveBatchOfDevicePingDto(List<MapSqlParameterSource> batchParams) {
+        namedParameterJdbcTemplate.batchUpdate(SAVE, batchParams.toArray(MapSqlParameterSource[]::new));
+    }
+
+    private void updateActiveField(Map<Long, DevicePingDto> groupedByDeviceId) {
+        namedParameterJdbcTemplate.update(
+            UPDATE_ACTIVE,
+            Collections.singletonMap("deviceIds", new ArrayList<>(groupedByDeviceId.keySet()))
+        );
+    }
+
+    private void selectForUpdate(Map<Long, DevicePingDto> groupedByDeviceId, List<MapSqlParameterSource> batchParams) {
+        groupedByDeviceId.values().forEach(pingDto -> {
+            batchParams.add(fillParameters(pingDto));
+            namedParameterJdbcTemplate.query(
+                SELECT_FOR_UPDATE,
+                Collections.singletonMap("deviceId", pingDto.getDeviceId()),
+                resultSet -> {}
+            );
+        });
+    }
+
+    private static Map<Long, DevicePingDto> groupingByDeviceId(List<DevicePingDto> devicePingDto) {
         return devicePingDto.stream()
-                   .collect(Collectors.toMap(DevicePingDto::getDeviceId, Function.identity(),
-                       BinaryOperator.maxBy(Comparator.comparing(DevicePingDto::getInsertedDateAtUtc))));
-    }
-
-    private void saveDevicePingDto(DevicePingDto pingDto) {
-        var parameters = new MapSqlParameterSource()
-                             .addValue("deviceId", pingDto.getDeviceId());
-        namedParameterJdbcTemplate.query(SELECT_FOR_UPDATE, parameters, resultSet -> {});
-        namedParameterJdbcTemplate.update(UPDATE_ACTIVE, parameters);
-        namedParameterJdbcTemplate.update(SAVE, fillParameters(pingDto));
+                                .collect(Collectors.toMap(
+                                    DevicePingDto::getDeviceId, Function.identity(),
+                                    BinaryOperator.maxBy(
+                                        Comparator.comparing(DevicePingDto::getInsertedDateAtUtc))
+                                ));
     }
 
     private MapSqlParameterSource fillParameters(DevicePingDto devicePingDto) {
