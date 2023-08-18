@@ -33,13 +33,15 @@
             UPDATE device_pings AS dp
             SET active = TRUE
             FROM (
-                SELECT device_id,
-                    MAX(inserted_date_at_utc) AS max_inserted_date
+                SELECT
+                    device_id,
+                    inserted_date_at_utc
+                    LEAD(inserted_date_at_utc) OVER (PARTITION BY device_id ORDER BY inserted_date_at_utc DESC) AS next_inserted_date
                 FROM device_pings
-                GROUP BY device_id
-            ) AS latest_pings
-            WHERE dp.device_id = latest_pings.device_id
-            AND dp.inserted_date_at_utc = latest_pings.max_inserted_date
+            ) AS nid
+            WHERE dp.device_id = nid.device_id
+                AND dp.inserted_date_at_utc = nid.inserted_date_at_utc
+                AND (nid.next_inserted_date IS NULL OR dp.inserted_date_at_utc > nid.next_inserted_date)
         </sql>
     </changeSet>
 </databaseChangeLog>
