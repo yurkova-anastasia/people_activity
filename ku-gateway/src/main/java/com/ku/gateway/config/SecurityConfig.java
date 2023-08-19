@@ -1,6 +1,5 @@
 package com.ku.gateway.config;
 
-import com.ku.gateway.security.UserDetailsServiceImpl;
 import com.ku.gateway.security.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,8 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtTokenFilter jwtTokenFilter;
 
-    private UserDetailsServiceImpl jwtUserDetailsService;
-
     @Autowired
     public void setUserDetailsService(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -45,11 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void setJwtTokenFilter(JwtTokenFilter jwtTokenFilter) {
         this.jwtTokenFilter = jwtTokenFilter;
-    }
-
-    @Autowired
-    public void setJwtUserDetailsService(UserDetailsServiceImpl jwtUserDetailsService) {
-        this.jwtUserDetailsService = jwtUserDetailsService;
     }
 
     @Override

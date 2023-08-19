@@ -1,6 +1,5 @@
 package com.ku.gateway.service.producer;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ku.common.dto.DevicePingDto;
