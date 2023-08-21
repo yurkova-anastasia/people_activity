@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -33,29 +35,24 @@ public class DeviceCoordinatesRepository {
 
     @Transactional
     public void save(List<DeviceCoordinatesDto> coordinatesSaveDtos) {
-        Map<Long, DeviceCoordinatesDto> groupedCoordinates = groupCoordinatesByDeviceId(coordinatesSaveDtos);
+        Set<Long> deviceIds = coordinatesSaveDtos.stream()
+                .map(DeviceCoordinatesDto::getDeviceId)
+                .collect(Collectors.toSet());
 
         namedParameterJdbcTemplate.queryForList(
                 SELECT_FOR_UPDATE,
-                new MapSqlParameterSource().addValue("deviceIds", groupedCoordinates.keySet()));
+                new MapSqlParameterSource().addValue("deviceIds", deviceIds)
+        );
 
         namedParameterJdbcTemplate.update(
                 UPDATE_ACTIVE,
-                new MapSqlParameterSource().addValue("deviceIds", new ArrayList<>(groupedCoordinates.keySet()))
+                new MapSqlParameterSource().addValue("deviceIds", deviceIds)
         );
 
         MapSqlParameterSource[] paramsForBulkInsert = coordinatesSaveDtos.stream()
                 .map(this::fillParametersForSaveQuery).toArray(MapSqlParameterSource[]::new);
 
         namedParameterJdbcTemplate.batchUpdate(SAVE, paramsForBulkInsert);
-    }
-
-    private Map<Long, DeviceCoordinatesDto> groupCoordinatesByDeviceId(List<DeviceCoordinatesDto> coordinatesSaveDtos) {
-        return coordinatesSaveDtos.stream()
-                .collect(Collectors.toMap(
-                        DeviceCoordinatesDto::getDeviceId,
-                        Function.identity()
-                ));
     }
 
     private MapSqlParameterSource fillParametersForSaveQuery(DeviceCoordinatesDto coordinatesSaveDto) {
