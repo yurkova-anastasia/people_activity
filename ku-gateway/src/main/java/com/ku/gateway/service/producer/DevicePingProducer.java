@@ -1,6 +1,5 @@
 package com.ku.gateway.service.producer;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ku.common.dto.DevicePingDto;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DevicePingProducer {
 
-    @Value("${topic.name}")
+    @Value("${topic.pings.name}")
     private String orderTopic;
 
     private final ObjectMapper objectMapper;

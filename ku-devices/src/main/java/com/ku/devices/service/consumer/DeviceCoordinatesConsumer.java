@@ -3,7 +3,7 @@ package com.ku.devices.service.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ku.common.dto.DeviceCoordinatesDto;
-import com.ku.devices.exception.ConsumerException;
+import com.ku.devices.exception.DtoMappingException;
 import com.ku.devices.service.DeviceCoordinatesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class DeviceCoordinatesConsumer {
         this.coordinatesService = coordinatesService;
     }
 
-    @KafkaListener(topics = "${topic.coordinates.name}", groupId = "default")
+    @KafkaListener(topics = "${topic.coordinates.name}", groupId = "${spring.kafka.consumer.group-id}")
     public void consumeMessage(List<String> messages) {
         List<DeviceCoordinatesDto> coordinatesDtos = new ArrayList<>();
         messages.forEach(
@@ -35,9 +35,11 @@ public class DeviceCoordinatesConsumer {
                         var coordinatesDto = objectMapper.readValue(message, DeviceCoordinatesDto.class);
                         coordinatesDtos.add(coordinatesDto);
                     } catch (JsonProcessingException e) {
-                        throw new ConsumerException("There was a problem when processing JSON content", e);
+                        log.error("Failure during processing the following message: " + message);
+                        throw new DtoMappingException("There was a problem when processing JSON content", e);
                     }
                 });
+
         coordinatesService.saveDeviceCoordinates(coordinatesDtos);
     }
 }
