@@ -27,7 +27,7 @@ public class DevicePingRepository {
     """;
 
     public static final String SELECT_FOR_UPDATE = """
-         SELECT * FROM device_pings WHERE device_id = :deviceId FOR UPDATE
+         SELECT * FROM device_pings WHERE device_id IN (:deviceIds) FOR UPDATE
     """;
 
     public static final String UPDATE_ACTIVE = """
@@ -47,7 +47,9 @@ public class DevicePingRepository {
 
         List<MapSqlParameterSource> batchParams = new ArrayList<>();
 
-        selectForUpdate(groupedByDeviceId, batchParams);
+        groupedByDeviceId.values().forEach(pingDto -> batchParams.add(fillParameters(pingDto)));
+
+        selectForUpdate(groupedByDeviceId);
 
         updateActiveField(groupedByDeviceId);
 
@@ -65,15 +67,11 @@ public class DevicePingRepository {
         );
     }
 
-    private void selectForUpdate(Map<Long, DevicePingDto> groupedByDeviceId, List<MapSqlParameterSource> batchParams) {
-        groupedByDeviceId.values().forEach(pingDto -> {
-            batchParams.add(fillParameters(pingDto));
-            namedParameterJdbcTemplate.query(
-                SELECT_FOR_UPDATE,
-                Collections.singletonMap("deviceId", pingDto.getDeviceId()),
-                resultSet -> {}
-            );
-        });
+    private void selectForUpdate(Map<Long, DevicePingDto> groupedByDeviceId) {
+        namedParameterJdbcTemplate.query(
+            SELECT_FOR_UPDATE,
+            Collections.singletonMap("deviceIds", new ArrayList<>(groupedByDeviceId.keySet())),
+            rs -> {});
     }
 
     private static Map<Long, DevicePingDto> groupingByDeviceId(List<DevicePingDto> devicePingDto) {
