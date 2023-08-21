@@ -14,7 +14,10 @@ spring:
       localhost: 9092
 
 topic:
-  name: ping
+  pings:
+    name: ping
+  coordinates:
+    name: coordinates
 
 auto:
   create:

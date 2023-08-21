@@ -4,10 +4,10 @@ server:
 spring:
   kafka:
     consumer:
-      group-id: "default"
+      group-id: "coordinates"
+      max-poll-records: 100
       properties:
-        max.poll.records: 100
-        max.poll.interval.ms: 300000
+        auto.create.topics.enable: true
   datasource:
     url: jdbc:postgresql://localhost:5432/ku_devices
     driver-class-name: org.postgresql.Driver
@@ -19,8 +19,3 @@ topic:
     name: ping
   coordinates:
     name: coordinates
-
-auto:
-  create:
-    topics:
-      enable: true
