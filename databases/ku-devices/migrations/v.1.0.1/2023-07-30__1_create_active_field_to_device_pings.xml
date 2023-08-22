@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="anastasia.yurkova2003@gmail.com" context = "data_migration">
+        <addColumn tableName="device_pings">
+            <column name="active" type="boolean"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="2" author="anastasia.yurkova2003@gmail.com" context = "data_migration">
+        <sql>
+            CREATE UNIQUE INDEX uidx_device_pings_device_id
+            ON device_pings (device_id)
+            WHERE active = TRUE
+        </sql>
+        <rollback>
+            <sql>
+                ALTER TABLE device_pings DROP INDEX uidx_device_pings_device_id
+            </sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="3" author="anastasia.yurkova2003@gmail.com" context = "data_migration">
+        <sql>
+            UPDATE device_pings SET active = FAlSE
+        </sql>
+    </changeSet>
+
+    <changeSet id="4" author="anastasia.yurkova2003@gmail.com" context = "data_migration">
+        <sql>
+            UPDATE device_pings AS dp
+            SET active = TRUE
+            FROM (
+                SELECT device_id, inserted_date_at_utc,
+                    LEAD(inserted_date_at_utc) OVER (PARTITION BY device_id ORDER BY inserted_date_at_utc DESC) AS next_inserted_date
+                FROM device_pings
+            ) AS nid
+            WHERE dp.device_id = nid.device_id
+                AND dp.inserted_date_at_utc = nid.inserted_date_at_utc
+                AND nid.next_inserted_date IS NULL
+        </sql>
+    </changeSet>
+</databaseChangeLog>
+

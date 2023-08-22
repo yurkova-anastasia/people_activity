@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class DevicePingService {
@@ -17,8 +19,7 @@ public class DevicePingService {
         this.devicePingsRepository = devicePingsRepository;
     }
 
-
-    public void saveDevicePing(DevicePingDto devicePingsDto) {
+    public void saveDevicePing(List<DevicePingDto> devicePingsDto) {
         devicePingsRepository.save(devicePingsDto);
         log.info("Device ping persisted {}", devicePingsDto);
     }

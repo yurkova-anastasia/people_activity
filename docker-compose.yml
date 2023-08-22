@@ -51,7 +51,8 @@ services:
         --changeLogFile="changelog.xml"
         --url="jdbc:postgresql://postgres:5432/ku_devices"
         --username=ku_devices_app
-        --password=password  
+        --password=password
+        --contexts="data_migration"
       update
 
   zookeeper:

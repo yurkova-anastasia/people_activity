@@ -3,7 +3,5 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
 
-    <include file="v.1.0.0/cumulative-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="v.1.0.1/cumulative-changelog.xml" relativeToChangelogFile="true"/>
-    <include file="test-data/cumulative-changelog.xml" relativeToChangelogFile="true"/>
+    <include file="2023-07-30__1_create_active_field_to_device_pings.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
