@@ -1,6 +1,5 @@
 package com.ku.devices.service.consumer;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ku.common.dto.DevicePingDto;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class DevicePingConsumer {
 
-    private static final String topic = "${topic.name}";
-
     private final ObjectMapper objectMapper;
     private final DevicePingService devicePingService;
 
@@ -25,10 +22,9 @@ public class DevicePingConsumer {
         this.devicePingService = devicePingService;
     }
 
-    @KafkaListener(topics = topic)
+    @KafkaListener(topics = "${topic.pings.name}")
     public void consumeMessage(String message) throws JsonProcessingException {
         var devicePingDto = objectMapper.readValue(message, DevicePingDto.class);
         devicePingService.saveDevicePing(devicePingDto);
     }
-
 }

@@ -1,6 +1,5 @@
 package com.ku.devices.repository;
 
-
 import com.ku.common.dto.DevicePingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,11 +18,6 @@ public class DevicePingRepository {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Autowired
-    public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-    }
-
     public void save(DevicePingDto devicePingsDto) {
         namedParameterJdbcTemplate.update(SAVE, fillParameters(devicePingsDto));;
     }
@@ -39,5 +33,10 @@ public class DevicePingRepository {
                    .addValue("systolicPressure", devicePingsDto.getSystolicPressure())
                    .addValue("diastolicPressure", devicePingsDto.getDiastolicPressure())
                    .addValue("insertedDateAtUtc", devicePingsDto.getInsertedDateAtUtc());
+    }
+
+    @Autowired
+    public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.17.xsd">
+
+    <changeSet id="1" author="andrei.yurueu1@gmail.com">
+        <createTable tableName="device_coordinates">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="latitude" type="real">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="real">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="device_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="andrei.yurueu1@gmail.com">
+        <addForeignKeyConstraint baseTableName="device_coordinates" baseColumnNames="device_id"
+                                 constraintName="fk_device_coordinates_devices_device_id"
+                                 referencedTableName="devices"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="3" author="andrei.yurueu1@gmail.com">
+        <sql>
+            CREATE UNIQUE INDEX index_unique_active_device_id
+                ON device_coordinates (device_id)
+                WHERE active = true;
+        </sql>
+        <rollback>
+            <sql>
+                DROP INDEX index_unique_active_device_id;
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
+

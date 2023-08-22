@@ -2,31 +2,29 @@ package com.ku.gateway.service.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ku.common.dto.DevicePingDto;
-import lombok.extern.slf4j.Slf4j;
+import com.ku.common.dto.DeviceCoordinatesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
-public class DevicePingProducer {
+public class DeviceCoordinatesProducer {
 
-    @Value("${topic.pings.name}")
-    private String orderTopic;
+    @Value("${topic.coordinates.name}")
+    private String topic;
 
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Autowired
-    public DevicePingProducer(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
-        this.kafkaTemplate = kafkaTemplate;
+    public DeviceCoordinatesProducer(ObjectMapper objectMapper, KafkaTemplate<String, String> kafkaTemplate) {
         this.objectMapper = objectMapper;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(DevicePingDto ping) throws JsonProcessingException {
-        var orderAsMessage = objectMapper.writeValueAsString(ping);
-        kafkaTemplate.send(orderTopic, orderAsMessage);
+    public void sendMessage(DeviceCoordinatesDto coordinates) throws JsonProcessingException {
+        var message = objectMapper.writeValueAsString(coordinates);
+        kafkaTemplate.send(topic, message);
     }
 }
