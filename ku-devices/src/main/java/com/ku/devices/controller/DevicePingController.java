@@ -24,5 +24,4 @@ public class DevicePingController {
     public void setDevicePingsService(DevicePingService devicePingsService) {
         this.devicePingService = devicePingsService;
     }
-
 }
