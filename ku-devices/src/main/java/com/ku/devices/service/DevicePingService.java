@@ -23,4 +23,8 @@ public class DevicePingService {
         devicePingsRepository.save(devicePingsDto);
         log.info("Device ping persisted {}", devicePingsDto);
     }
+
+    public List<DevicePingDto> findActive() {
+        return devicePingsRepository.findActive();
+    }
 }

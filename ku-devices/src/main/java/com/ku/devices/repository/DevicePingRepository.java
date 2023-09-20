@@ -19,6 +19,10 @@ import java.util.stream.Collectors;
 @Repository
 public class DevicePingRepository {
 
+    public static final String SELECT_BY_DEVICE_ID = """
+         SELECT * FROM device_pings WHERE active = TRUE
+    """;
+
     public static final String SAVE = """
           INSERT INTO device_pings (weight, height, pulse, temperature, heartbeat,
                 respiratory_rate, systolic_pressure, diastolic_pressure, inserted_date_at_utc, device_id, active)
@@ -39,6 +43,21 @@ public class DevicePingRepository {
     @Autowired
     public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
+    public List<DevicePingDto> findActive() {
+        return namedParameterJdbcTemplate.query(SELECT_BY_DEVICE_ID, (rs, rowNum) -> new DevicePingDto()
+                .setWeight(rs.getFloat("weight"))
+                .setHeight(rs.getFloat("height"))
+                .setPulse(rs.getInt("pulse"))
+                .setTemperature(rs.getFloat("temperature"))
+                .setHeartbeat(rs.getInt("heartbeat"))
+                .setRespiratoryRate(rs.getInt("respiratory_rate"))
+                .setSystolicPressure(rs.getInt("systolic_pressure"))
+                .setDiastolicPressure(rs.getInt("diastolic_pressure"))
+                .setInsertedDateAtUtc(rs.getTimestamp("inserted_date_at_utc").toLocalDateTime())
+                .setDeviceId(rs.getLong("device_id"))
+                .setActive(rs.getBoolean("active")));
     }
 
     @Transactional

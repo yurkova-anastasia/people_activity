@@ -3,6 +3,7 @@ server:
 
 ku-gateway:
   users-url: http://localhost:8080/users
+  devices-url: http://localhost:8081/devicePings
 
 spring:
   security:
@@ -20,3 +21,29 @@ auto:
   create:
     topics:
       enable: true
+
+normalRanges:
+  weight:
+    min: 50.0
+    max: 100.0
+  height:
+    min: 150.0
+    max: 200.0
+  pulse:
+    min: 60
+    max: 100
+  temperature:
+    min: 36.0
+    max: 37.5
+  heartbeat:
+    min: 60
+    max: 100
+  respiratoryRate:
+    min: 12
+    max: 20
+  systolicPressure:
+    min: 90
+    max: 120
+  diastolicPressure:
+    min: 60
+    max: 80

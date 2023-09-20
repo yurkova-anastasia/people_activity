@@ -79,6 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET, "/users/**").permitAll()
             .antMatchers(HttpMethod.POST, "/users").permitAll()
             .antMatchers(HttpMethod.POST, "/devicePing").permitAll()
+            .antMatchers(HttpMethod.POST, "/devicePing/cache").permitAll()
             .antMatchers("/login").permitAll()
             // Our private endpoints
             .anyRequest().authenticated();
